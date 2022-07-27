@@ -2,3 +2,9 @@
 sequelize model:generate --name TipoPerfiles --attributes nombre:string
 --Modelo de Usuarios --
 sequelize model:generate --name Usuarios --attributes nombre:string,usuario:string,password:string,correo:string  
+--Modelo de Secciones del sistema --
+sequelize model:generate --name Secciones --attributes descripcion:string
+--Modelo de Mudulos del sistema --
+sequelize model:generate --name Modulos --attributes descripcion:string
+--Modelo de PerfilModulos --
+sequelize model:generate --name PerfilModulos --attributes descripcion:string

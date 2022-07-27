@@ -7,6 +7,9 @@ module.exports = (sequelize, DataTypes) => {
       this.hasMany(models.TipoPerfiles, {
         foreignKey: 'perfilID'
       });
+      this.hasMany(models.TipoPerfiles, {
+        foreignKey: 'perfilID'
+      });
     }
   }
   TipoPerfiles.init(

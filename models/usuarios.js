@@ -7,6 +7,12 @@ module.exports = (sequelize, DataTypes) => {
       this.belongsTo(models.TipoPerfiles, {
         foreignKey: 'perfilID'
       });
+      this.hasMany(models.Usuarios, {
+        foreignKey: 'usuarioRegistroID'
+      });
+      this.hasMany(models.Usuarios, {
+        foreignKey: 'usuarioModificacionID'
+      });
     }
   }
   Usuarios.init(
