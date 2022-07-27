@@ -1,0 +1,4 @@
+--Modelo de Tipo de Perfiles --
+sequelize model:generate --name TipoPerfiles --attributes nombre:string
+--Modelo de Usuarios --
+sequelize model:generate --name Usuarios --attributes nombre:string,usuario:string,password:string,correo:string  
