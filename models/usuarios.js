@@ -1,16 +1,40 @@
 'use strict';
 const { Model } = require('sequelize');
+const bcrypt = require("bcryptjs");
 module.exports = (sequelize, DataTypes) => {
   class Usuarios extends Model {
     static associate(models) {
       // define association here
+      //Perfiles
       this.belongsTo(models.TipoPerfiles, {
         foreignKey: 'perfilID'
       });
-      this.hasMany(models.Usuarios, {
+      //Secciones
+      this.hasMany(models.Secciones, {
         foreignKey: 'usuarioRegistroID'
       });
-      this.hasMany(models.Usuarios, {
+      this.hasMany(models.Secciones, {
+        foreignKey: 'usuarioModificacionID'
+      });
+      //Modulos
+      this.hasMany(models.Modulos, {
+        foreignKey: 'usuarioRegistroID'
+      });
+      this.hasMany(models.Modulos, {
+        foreignKey: 'usuarioModificacionID'
+      });
+      //PerfilModulos
+      this.hasMany(models.PerfilModulos, {
+        foreignKey: 'usuarioRegistroID'
+      });
+      this.hasMany(models.PerfilModulos, {
+        foreignKey: 'usuarioModificacionID'
+      });
+      //Trabajadores
+      this.hasMany(models.Trabajadores, {
+        foreignKey: 'usuarioRegistroID'
+      });
+      this.hasMany(models.Trabajadores, {
         foreignKey: 'usuarioModificacionID'
       });
     }
@@ -41,3 +65,13 @@ module.exports = (sequelize, DataTypes) => {
   );
   return Usuarios;
 };
+
+Usuarios.prototype.validPassword = (password, hash) => {
+  return bcrypt.compare(password, hash);
+};
+Usuarios.addHook("beforeValidate", async (usuario) => {
+  if(usuario.password){
+    const salt = await bcrypt.genSalt(10);
+    usuario.password =  await bcrypt.hash(usuario.password, salt);
+  }
+});

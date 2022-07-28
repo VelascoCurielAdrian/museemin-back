@@ -11,6 +11,9 @@ module.exports = (sequelize, DataTypes) => {
       this.belongsTo(models.Usuarios, {
         foreignKey: 'usuarioModificacionID'
       });   
+      this.hasMany(models.Modulos, {
+        foreignKey: 'moduloID'
+      });   
     }    
   }
   Secciones.init({

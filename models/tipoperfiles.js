@@ -4,10 +4,10 @@ module.exports = (sequelize, DataTypes) => {
   class TipoPerfiles extends Model {
     static associate(models) {
       // define association here
-      this.hasMany(models.TipoPerfiles, {
+      this.hasMany(models.Usuarios, {
         foreignKey: 'perfilID'
       });
-      this.hasMany(models.TipoPerfiles, {
+      this.hasMany(models.PerfilModulos, {
         foreignKey: 'perfilID'
       });
     }

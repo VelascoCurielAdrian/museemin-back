@@ -35,12 +35,12 @@ module.exports = {
         defaultValue: true
       },
       createdAt: {
-        allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
+        field: 'fechaRegistro',
       },
       updatedAt: {
-        allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
+        field: 'fechaModificacion',
       },
       perfilID: {
         allowNull: false,

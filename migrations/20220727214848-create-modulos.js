@@ -27,13 +27,40 @@ module.exports = {
         allowNull: false,
         defaultValue: true
       },
-      createdAt: {
+      usuarioRegistroID: {
+        type: Sequelize.INTEGER,
         allowNull: false,
-        type: Sequelize.DATE
+        references: {
+          model: 'Usuarios',
+          key: 'id'
+        }
+      },
+      createdAt: {
+        type: Sequelize.DATE,
+        field: 'fechaRegistro',
+      },
+      usuarioModificacionID: {
+        type: Sequelize.INTEGER,
+        allowNull: true,
+        references: {
+          model: 'Usuarios',
+          key: 'id'
+        }
       },
       updatedAt: {
+        type: Sequelize.DATE,
+        field: 'fechaModificacion',
+      },
+      seccionID: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.INTEGER,
+        validate: {
+          isInt: true
+        },
+        references: {
+          model: 'Secciones',
+          key: 'id',
+        }
       }
     });
   },

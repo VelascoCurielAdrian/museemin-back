@@ -5,6 +5,12 @@ const {
 module.exports = (sequelize, DataTypes) => {
   class PerfilModulos extends Model {
     static associate(models) {
+      this.belongsTo(models.Usuarios, {
+        foreignKey: 'usuarioRegistroID'
+      });
+      this.belongsTo(models.Usuarios, {
+        foreignKey: 'usuarioModificacionID'
+      });
       this.belongsTo(models.Modulos, {
         foreignKey: 'moduloID'
       });
@@ -14,7 +20,18 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   PerfilModulos.init({
-    descripcion: DataTypes.STRING
+    descripcion: {
+      type: DataTypes.STRING(50),
+      allowNull: false,
+    },
+    perfilID: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+    moduloID: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
   }, {
     sequelize,
     modelName: 'PerfilModulos',

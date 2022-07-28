@@ -1,10 +1,12 @@
---Modelo de Tipo de Perfiles --
+--MODELO DE TIPO PERFILES --
 sequelize model:generate --name TipoPerfiles --attributes nombre:string
---Modelo de Usuarios --
+--MODELO DE USUARIOS--
 sequelize model:generate --name Usuarios --attributes nombre:string,usuario:string,password:string,correo:string  
---Modelo de Secciones del sistema --
+--MODELO DE SECCIONES DEL SISTEMA--
 sequelize model:generate --name Secciones --attributes descripcion:string
---Modelo de Mudulos del sistema --
+--MODELO MODULOS DEL SISTEMA--
 sequelize model:generate --name Modulos --attributes descripcion:string
---Modelo de PerfilModulos --
+--MODELO DE MODULOS DE PERFILES --
 sequelize model:generate --name PerfilModulos --attributes descripcion:string
+--MODELO DE TRABAJADORES--
+sequelize model:generate --name Trabajadores --attributes nombres:string,primerApellido:string,segundoApellido:string,telefono:string,correo:string,colonia:string,calles:string,referencia:string,numeroExterior:string

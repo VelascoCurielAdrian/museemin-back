@@ -36,8 +36,8 @@ module.exports = {
         }
       },
       createdAt: {
-        allowNull: true,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
+        field: 'fechaRegistro',
       },
       usuarioModificacionID: {
         type: Sequelize.INTEGER,
@@ -48,9 +48,9 @@ module.exports = {
         }
       },
       updatedAt: {
-        allowNull: true,
-        type: Sequelize.DATE
-      }
+        type: Sequelize.DATE,
+        field: 'fechaModificacion',
+      },
     });
   },
   async down(queryInterface, Sequelize) {

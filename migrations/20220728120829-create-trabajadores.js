@@ -1,32 +1,48 @@
 'use strict';
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('PerfilModulos', {
+    await queryInterface.createTable('Trabajadores', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      perfilID: {
-        allowNull: false,
-        type: Sequelize.INTEGER,
-        validate: {
-          isInt: true
-        },
-        references: {
-          model: 'TipoPerfiles',
-          key: 'id',
-        }
+      nombres: {
+        type: Sequelize.STRING(50),
+        allowNull: false     
       },
-      moduloID: {
-        type: Sequelize.INTEGER,
+      primerApellido: {
+        type: Sequelize.STRING(50),
+        allowNull: false,  
+      },
+      segundoApellido: {
+        type: Sequelize.STRING(50),
+        allowNull: false,    
+      },
+      telefono: {
+        type: Sequelize.STRING(10),
         allowNull: false,
-        primaryKey: true,
-        references: {
-          model: 'Modulos',
-          key: 'id'
-        }
+      },
+      correo: {
+        type: Sequelize.STRING(50),
+        allowNull: false,
+      },
+      colonia: {
+        type: Sequelize.STRING(50),
+        allowNull: false,
+      },
+      calles: {
+        type: Sequelize.STRING(200),
+        allowNull: false,
+      },
+      referencia: {
+        type: Sequelize.STRING(200),
+        allowNull: false,
+      },
+      numeroExterior: {
+        type: Sequelize.STRING(10),
+        allowNull: false,
       },
       activo: {
         type: Sequelize.BOOLEAN,
@@ -61,10 +77,13 @@ module.exports = {
       updatedAt: {
         allowNull: true,
         type: Sequelize.DATE
+      },
+      deletedAt: {
+        type: Sequelize.DATE
       }
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('PerfilModulos');
+    await queryInterface.dropTable('Trabajadores');
   }
 };
