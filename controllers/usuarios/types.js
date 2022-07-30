@@ -28,5 +28,4 @@ module.exports = `
     usuario: String!
     password: String!
   }
-
 `;

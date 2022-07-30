@@ -6,5 +6,5 @@ const types = `
 	type Response {
 		status: String!
 	}
-`
+`;
 module.exports = types;
