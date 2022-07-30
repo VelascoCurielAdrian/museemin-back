@@ -50,11 +50,15 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
       },
       password: {
-        type: DataTypes.STRING(50),
+        type: DataTypes.STRING,
         allowNull: false,
       },
       correo: {
         type: DataTypes.STRING(50),
+        allowNull: true,
+      },
+      perfilID: {
+        type: DataTypes.INTEGER,
         allowNull: false,
       },
     },
@@ -63,15 +67,15 @@ module.exports = (sequelize, DataTypes) => {
       modelName: 'Usuarios',
     }
   );
+  
+  Usuarios.prototype.validPassword = (password, hash) => {
+    return bcrypt.compare(password, hash);
+  };
+  Usuarios.addHook("beforeValidate", async (usuario) => {
+    if(usuario.password){
+      const salt = await bcrypt.genSalt(10);
+      usuario.password =  await bcrypt.hash(usuario.password, salt);
+    }
+  });
   return Usuarios;
 };
-
-Usuarios.prototype.validPassword = (password, hash) => {
-  return bcrypt.compare(password, hash);
-};
-Usuarios.addHook("beforeValidate", async (usuario) => {
-  if(usuario.password){
-    const salt = await bcrypt.genSalt(10);
-    usuario.password =  await bcrypt.hash(usuario.password, salt);
-  }
-});

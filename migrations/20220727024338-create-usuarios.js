@@ -17,7 +17,7 @@ module.exports = {
         allowNull: false,
       },
       password: {
-        type: Sequelize.STRING(50),
+        type: Sequelize.STRING,
         allowNull: false,
       },
       correo: {
@@ -35,12 +35,12 @@ module.exports = {
         defaultValue: true
       },
       createdAt: {
+        allowNull: false,
         type: Sequelize.DATE,
-        field: 'fechaRegistro',
       },
       updatedAt: {
+        allowNull: false,
         type: Sequelize.DATE,
-        field: 'fechaModificacion',
       },
       perfilID: {
         allowNull: false,
