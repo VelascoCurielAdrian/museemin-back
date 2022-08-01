@@ -1,15 +1,15 @@
 const validator = require('./validator');
 const MENSAJES = require('./mensajes');
-const { Trabajadores } = require('../../models');
+const { Clasificaciones } = require('../../models');
 const { UserInputError } = require('apollo-server');
 const { objectFilter, orderFormat } = require('../../helpers/general');
 const mensajes = require('./mensajes');
 
 const resolvers = {
 	Query: {
-		getAllTrabajador: async (root, { limit = 25, offset, order = ['id'] }) => {
+		getAllClasificacion: async (root, { limit = 25, offset, order = ['id'] }) => {
 			try {
-				return await Trabajadores.findAndCountAll({
+				return await Clasificaciones.findAndCountAll({
 					where: {
 						activo: true,
 						estatus: true,
@@ -29,12 +29,12 @@ const resolvers = {
 				return error;
 			}
 		},
-		getTrabajador: async (_, { id }, {}) => {
+		getClasificacion: async (_, { id }, {}) => {
 			try {
 				if (isNaN(parseInt(id))) throw MENSAJES.id;
-				const exist = await Trabajadores.count({ where: { id } });
-				if (!exist) throw MENSAJES.existeTrabajador;
-				return await Trabajadores.findOne({
+				const exist = await Clasificaciones.count({ where: { id } });
+				if (!exist) throw MENSAJES.existeClasificacion;
+				return await Clasificaciones.findOne({
 					where: {
 						id,
 						activo: true,
@@ -47,14 +47,12 @@ const resolvers = {
 		},
 	},
 	Mutation: {
-		createTrabajador: async (_, { input }, {}) => {
+		createClasificacion: async (_, { input }, {}) => {
 			try {
 				const { isValid, fields, paths } = validator(input);
 				if (!isValid)
 					throw new UserInputError('Input Error', { fields, paths });
-				if (input.telefono && input.telefono.length !== 10)
-					throw MENSAJES.telefono;
-				const response = await Trabajadores.create({ ...input });
+				const response = await Clasificaciones.create({ ...input });
 				return {
 					mensaje: mensajes.successCreate,
 					respuesta: response.dataValues,
@@ -63,17 +61,15 @@ const resolvers = {
 				return error;
 			}
 		},
-		updateTrabajador: async (_, { id, input }, {}) => {
+		updateClasificacion: async (_, { id, input }, {}) => {
 			try {
 				const { isValid, fields, paths } = validator(input);
 				if (isNaN(parseInt(id))) throw MENSAJES.id;
-				const existe = await Trabajadores.count({ where: { id } });
-				if (!existe) throw MENSAJES.existeTrabajador;
+				const existe = await Clasificaciones.count({ where: { id } });
+				if (!existe) throw MENSAJES.existeClasificacion;
 				if (!isValid)
 					throw new UserInputError('Input Error', { fields, paths });
-				if (input.telefono && input.telefono.length !== 10)
-					throw MENSAJES.telefono;
-				const response = await Trabajadores.update(input, {
+				const response = await Clasificaciones.update(input, {
 					where: { id },
 					returning: true,
 					plain: true,
@@ -86,13 +82,13 @@ const resolvers = {
 				return error;
 			}
 		},
-		deleteTrabajador: async (_, { id }, {}) => {
+		deleteClasificacion: async (_, { id }, {}) => {
 			try {
 				if (isNaN(parseInt(id))) throw MENSAJES.id;
-				const existe = await Trabajadores.count({ where: { id: id } });
-				if (!existe) throw MENSAJES.existeTrabajador;
+				const existe = await Clasificaciones.count({ where: { id: id } });
+				if (!existe) throw MENSAJES.existeClasificacion;
 
-				const response = await Trabajadores.update(
+				const response = await Clasificaciones.update(
 					{ activo: false },
 					{
 						where: { id },

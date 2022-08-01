@@ -37,6 +37,13 @@ module.exports = (sequelize, DataTypes) => {
 			this.hasMany(models.Trabajadores, {
 				foreignKey: 'usuarioModificacionID',
 			});
+			//Clasificaciones
+			this.hasMany(models.Clasificaciones, {
+				foreignKey: 'usuarioRegistroID',
+			});
+			this.hasMany(models.Clasificaciones, {
+				foreignKey: 'usuarioModificacionID',
+			});
 		}
 	}
 	Usuarios.init(

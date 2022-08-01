@@ -4,7 +4,7 @@ module.exports = `
     rows: [trabajador]
   }
 
-  type response {
+  type responseTrabajador {
     mensaje: String!
     respuesta: trabajador!
   }

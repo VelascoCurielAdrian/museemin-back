@@ -1,12 +1,12 @@
 module.exports = `
   type Query{
-    getAll(offset: Int, limit: Int): TrabajadorResponse!
-    get(id: ID!): trabajador!
+    getAllTrabajador(offset: Int, limit: Int): TrabajadorResponse!
+    getTrabajador(id: ID!): trabajador!
   }
   
   type Mutation {
-    create(input: trabajadorDatos!): response!
-    update(id: ID!, input: trabajadorDatos!): response!
-    delete(id: ID): response!
+    createTrabajador(input: trabajadorDatos!): responseTrabajador!
+    updateTrabajador(id: ID!, input: trabajadorDatos!): responseTrabajador!
+    deleteTrabajador(id: ID): responseTrabajador!
   }
 `;
