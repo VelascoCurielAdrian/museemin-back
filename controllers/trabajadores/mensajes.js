@@ -15,4 +15,7 @@ module.exports = {
 		'Input Error.',
 		formatError('El teléfono debe de contener 10 digitos.', 'phone'),
 	),
+	successCreate: 'Trabajador almacenado correctamente.',
+	successUpdate: 'Trabajador actualizado correctamente.',
+	successDelete: 'Trabajador eliminado correctamente.',
 };

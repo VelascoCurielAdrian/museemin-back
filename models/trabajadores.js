@@ -23,6 +23,8 @@ module.exports = (sequelize, DataTypes) => {
 			calles: DataTypes.STRING,
 			referencia: DataTypes.STRING,
 			numeroExterior: DataTypes.STRING,
+			activo: DataTypes.BOOLEAN,
+			estatus: DataTypes.BOOLEAN
 		},
 		{
 			sequelize,

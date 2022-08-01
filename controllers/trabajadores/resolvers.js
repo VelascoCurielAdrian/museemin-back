@@ -1,12 +1,13 @@
 const validator = require('./validator');
-const MESSAGES = require('./error.message');
+const MENSAJES = require('./mensajes');
 const { Trabajadores } = require('../../models');
 const { UserInputError } = require('apollo-server');
 const { objectFilter, orderFormat } = require('../../helpers/general');
+const mensajes = require('./mensajes');
 
 const resolvers = {
 	Query: {
-		trabajadores: async (root, { limit = 25, offset = 0, order = ['id'] }) => {
+		getAll: async (root, { limit = 25, offset, order = ['id'] }) => {
 			try {
 				return await Trabajadores.findAndCountAll({
 					where: {
@@ -28,62 +29,85 @@ const resolvers = {
 				return error;
 			}
 		},
-		// worker: async (_,{ id }, {}) => {
-		//   try {
-		//     if (isNaN(parseInt(id))) throw MESSAGES.id;
-		//     const exist = await Worker.count  ({ where: { id } });
-		//     if (!exist) throw MESSAGES.exist;
-		//     return await Worker.findByPk(id);
-		//   } catch (e) {
-		//     return e;
-		//   }
-		// }
+		get: async (_, { id }, {}) => {
+			try {
+				if (isNaN(parseInt(id))) throw MENSAJES.id;
+				const exist = await Trabajadores.count({ where: { id } });
+				if (!exist) throw MENSAJES.existeTrabajador;
+				return await Trabajadores.findOne({
+					where: {
+						id,
+						activo: true,
+						estatus: true,
+					},
+				});
+			} catch (error) {
+				return error;
+			}
+		},
 	},
 	Mutation: {
-		crearTrabajador: async (_, { input }, {}) => {
+		create: async (_, { input }, {}) => {
 			try {
 				const { isValid, fields, paths } = validator(input);
 				if (!isValid)
 					throw new UserInputError('Input Error', { fields, paths });
 				if (input.telefono && input.telefono.length !== 10)
-					throw MESSAGES.telefono;
-				const dataCreated = await Trabajadores.create({ ...input });
-				return dataCreated.dataValues;
-			} catch (e) {
-				return e;
+					throw MENSAJES.telefono;
+				const response = await Trabajadores.create({ ...input });
+				return {
+					mensaje: mensajes.successCreate,
+					respuesta: response.dataValues,
+				};
+			} catch (error) {
+				return error;
 			}
 		},
-		// updateWorker: async (_, { id, input }, {}) => {
-		//   try {
-		//     const { isValid, fields, paths } = validator(input);
-		//     if (!isValid) throw new UserInputError('Input Error', { fields, paths });
-		//     if (input.phone && input.phone.length !== 10) throw MESSAGES.phone;
-		//     if(isNaN(parseInt(id))) throw MESSAGES.id;
-		//     const exist = await Worker.count({ where: { id }});
-		//     if(!exist) throw MESSAGES.exist;
-		//     input.firstName = input.firstName.replace(/\s+/g, ' ').trim();
-		//     input.lastName = input.lastName ? input.lastName.replace(/\s+/g, ' ').trim() : '';
-		//     const dataUpdated = await Worker.update(input, {
-		//       where: { id },
-		//       returning: true,
-		//       plain: true,
-		//     });
-		//     return dataUpdated[1].dataValues;
-		//   } catch (e) {
-		//     return e;
-		//   }
-		// },
-		// deleteWorker: async (_, { id }, {}) => {
-		//   try {
-		//     if(isNaN(parseInt(id))) throw MESSAGES.id;
-		//     const exist = await Worker.count({ where: { id : id }});
-		//     if(!exist) throw MESSAGES.exist;
-		//     const dataDeleted = await Worker.destroy({ where: { id }, returning: true });
-		//     return dataDeleted[0].dataValues;
-		//   } catch (e) {
-		//     return e;
-		//   }
-		// }
+		update: async (_, { id, input }, {}) => {
+			try {
+				const { isValid, fields, paths } = validator(input);
+				if (isNaN(parseInt(id))) throw MENSAJES.id;
+				const existe = await Trabajadores.count({ where: { id } });
+				if (!existe) throw MENSAJES.existeTrabajador;
+				if (!isValid)
+					throw new UserInputError('Input Error', { fields, paths });
+				if (input.telefono && input.telefono.length !== 10)
+					throw MENSAJES.telefono;
+				const response = await Trabajadores.update(input, {
+					where: { id },
+					returning: true,
+					plain: true,
+				});
+				return {
+					mensaje: mensajes.successUpdate,
+					respuesta: response[1].dataValues,
+				};
+			} catch (error) {
+				return error;
+			}
+		},
+		delete: async (_, { id }, {}) => {
+			try {
+				if (isNaN(parseInt(id))) throw MENSAJES.id;
+				const existe = await Trabajadores.count({ where: { id: id } });
+				if (!existe) throw MENSAJES.existeTrabajador;
+
+				const response = await Trabajadores.update(
+					{ activo: false },
+					{
+						where: { id },
+						returning: true,
+						plain: true,
+					},
+				);
+				return {
+					mensaje: mensajes.successDelete,
+					respuesta: response[1].dataValues,
+				};
+			} catch (error) {
+				return error;
+			}
+		},
 	},
 };
 

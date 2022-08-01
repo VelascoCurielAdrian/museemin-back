@@ -4,6 +4,11 @@ module.exports = `
     rows: [trabajador]
   }
 
+  type response {
+    mensaje: String!
+    respuesta: trabajador!
+  }
+
   type trabajador{
     id: ID!
     nombres: String!
@@ -15,6 +20,9 @@ module.exports = `
     calles: String
     referencia: String
     numeroExterior: String
+    usuarioRegistroID: ID
+    activo: Boolean
+    estatus: Boolean
   }
 
   input trabajadorDatos {
