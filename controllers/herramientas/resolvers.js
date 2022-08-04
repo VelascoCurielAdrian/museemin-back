@@ -1,0 +1,169 @@
+const validator = require('./validator');
+const MENSAJES = require('./mensajes');
+const bd = require('../../models');
+const { UserInputError } = require('apollo-server');
+const { objectFilter, orderFormat } = require('../../helpers/general');
+const mensajes = require('./mensajes');
+const { response } = require('express');
+
+const resolvers = {
+	Query: {
+		getAllHerramientas: async (
+			root,
+			{ limit = 25, offset, order = ['id'] },
+		) => {
+			try {
+				return await bd.Herramientas.findAndCountAll({
+					where: {
+						activo: true,
+						estatus: true,
+					},
+					include: [
+						{
+							model: bd.Clasificaciones,
+							as: 'clasificacion',
+							where: {
+								activo: true,
+								estatus: true,
+							},
+						},
+					],
+					order: orderFormat(order),
+					...objectFilter({
+						offset: offset * limit,
+						limit: limit > 0 ? limit : null,
+					}),
+				}).then((data) => {
+					return {
+						count: data.count,
+						rows: data.rows,
+					};
+				});
+			} catch (error) {
+				return error;
+			}
+		},
+		getHerramienta: async (_, { id }, {}) => {
+			try {
+				if (isNaN(parseInt(id))) throw MENSAJES.id;
+				const exist = await bd.Clasificaciones.count({ where: { id } });
+				if (!exist) throw MENSAJES.existeClasificacion;
+				return await bd.Herramientas.findOne({
+					where: {
+						id,
+						activo: true,
+						estatus: true,
+					},
+					include: [
+						{
+							model: bd.Clasificaciones,
+							as: 'clasificacion',
+							where: {
+								activo: true,
+								estatus: true,
+							},
+						},
+					],
+				});
+			} catch (error) {
+				return error;
+			}
+		},
+	},
+	Mutation: {
+		createHerramienta: async (_, { input }, {}) => {
+			try {
+				const { clasificacionID } = input;
+				const { isValid, fields, paths } = validator(input);
+				if (!isValid)
+					throw new UserInputError('Input Error', { fields, paths });
+				const existeClasificacion = await bd.Clasificaciones.count({
+					where: { id: clasificacionID },
+				});
+				if (!existeClasificacion) throw mensajes.existeClasificacion;
+				const dataClasification = await bd.Clasificaciones.findOne({
+					where: { id: clasificacionID },
+				});
+				const response = await bd.Herramientas.create({ ...input });
+
+				return {
+					mensaje: mensajes.successCreate,
+					respuesta: {
+						...response.dataValues,
+						clasificacion: dataClasification.dataValues,
+					},
+				};
+			} catch (error) {
+				return error;
+			}
+		},
+		updateHerramienta: async (_, { id, input }, {}) => {
+			try {
+				const { clasificacionID } = input;
+				const { isValid, fields, paths } = validator(input);
+				if (!isValid)
+					throw new UserInputError('Input Error', { fields, paths });
+
+				const existeClasificacion = await bd.Clasificaciones.count({
+					where: { id: clasificacionID },
+				});
+				if (!existeClasificacion) throw mensajes.existeClasificacion;
+
+				const dataClasificacion = await bd.Clasificaciones.findOne({
+					where: { id: clasificacionID },
+				});
+
+				const response = await bd.Herramientas.update(input, {
+					where: { id },
+					returning: true,
+					plain: true,
+				});
+
+				return {
+					mensaje: mensajes.successUpdate,
+					respuesta: {
+						...response[1].dataValues,
+						clasificacion: dataClasificacion.dataValues,
+					},
+				};
+			} catch (error) {
+				return error;
+			}
+		},
+		deleteHerramienta: async (_, { id }, {}) => {
+			try {
+				if (isNaN(parseInt(id))) throw MENSAJES.id;
+				const existe = await bd.Herramientas.count({ where: { id: id } });
+				if (!existe) throw MENSAJES.existeClasificacion;
+
+				await bd.Herramientas.update(
+					{ activo: false },
+					{
+						where: { id },
+						returning: true,
+						plain: true,
+					},
+				);
+
+				const response = await bd.Herramientas.findOne({
+					where: { id },
+					include: [
+						{
+							model: bd.Clasificaciones,
+							as: 'clasificacion',
+						},
+					],
+				});
+
+				return {
+					mensaje: mensajes.successDelete,
+					respuesta: response,
+				};
+			} catch (error) {
+				return error;
+			}
+		},
+	},
+};
+
+module.exports = resolvers;

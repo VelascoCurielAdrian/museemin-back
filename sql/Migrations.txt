@@ -12,3 +12,5 @@ sequelize model:generate --name PerfilModulos --attributes descripcion:string
 sequelize model:generate --name Trabajadores --attributes nombres:string,primerApellido:string,segundoApellido:string,telefono:string,correo:string,colonia:string,calles:string,referencia:string,numeroExterior:string
 --MODELO DE CLASIFICACION DE HERRAMIENTAS--
 sequelize model:generate --name Clasificaciones --attributes descripcion:string
+--MODELO DE HERRAMIENTAS--
+sequelize model:generate --name Herramientas --attributes descripcion:string

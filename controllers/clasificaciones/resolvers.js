@@ -1,15 +1,18 @@
 const validator = require('./validator');
 const MENSAJES = require('./mensajes');
-const { Clasificaciones } = require('../../models');
+const bd = require('../../models');
 const { UserInputError } = require('apollo-server');
 const { objectFilter, orderFormat } = require('../../helpers/general');
 const mensajes = require('./mensajes');
 
 const resolvers = {
 	Query: {
-		getAllClasificacion: async (root, { limit = 25, offset, order = ['id'] }) => {
+		getAllClasificacion: async (
+			root,
+			{ limit = 25, offset, order = ['id'] },
+		) => {
 			try {
-				return await Clasificaciones.findAndCountAll({
+				return await bd.Clasificaciones.findAndCountAll({
 					where: {
 						activo: true,
 						estatus: true,
@@ -32,9 +35,9 @@ const resolvers = {
 		getClasificacion: async (_, { id }, {}) => {
 			try {
 				if (isNaN(parseInt(id))) throw MENSAJES.id;
-				const exist = await Clasificaciones.count({ where: { id } });
+				const exist = await bd.Clasificaciones.count({ where: { id } });
 				if (!exist) throw MENSAJES.existeClasificacion;
-				return await Clasificaciones.findOne({
+				return await bd.Clasificaciones.findOne({
 					where: {
 						id,
 						activo: true,
@@ -52,7 +55,11 @@ const resolvers = {
 				const { isValid, fields, paths } = validator(input);
 				if (!isValid)
 					throw new UserInputError('Input Error', { fields, paths });
-				const response = await Clasificaciones.create({ ...input });
+				const Existe = await bd.Clasificaciones.count({
+					where: { descripcion: input.descripcion },
+				});
+				if (Existe > 0) throw mensajes.existe;
+				const response = await bd.Clasificaciones.create({ ...input });
 				return {
 					mensaje: mensajes.successCreate,
 					respuesta: response.dataValues,
@@ -65,11 +72,11 @@ const resolvers = {
 			try {
 				const { isValid, fields, paths } = validator(input);
 				if (isNaN(parseInt(id))) throw MENSAJES.id;
-				const existe = await Clasificaciones.count({ where: { id } });
+				const existe = await bd.Clasificaciones.count({ where: { id } });
 				if (!existe) throw MENSAJES.existeClasificacion;
 				if (!isValid)
 					throw new UserInputError('Input Error', { fields, paths });
-				const response = await Clasificaciones.update(input, {
+				const response = await bd.Clasificaciones.update(input, {
 					where: { id },
 					returning: true,
 					plain: true,
@@ -85,10 +92,10 @@ const resolvers = {
 		deleteClasificacion: async (_, { id }, {}) => {
 			try {
 				if (isNaN(parseInt(id))) throw MENSAJES.id;
-				const existe = await Clasificaciones.count({ where: { id: id } });
+				const existe = await bd.Clasificaciones.count({ where: { id: id } });
 				if (!existe) throw MENSAJES.existeClasificacion;
 
-				const response = await Clasificaciones.update(
+				const response = await bd.Clasificaciones.update(
 					{ activo: false },
 					{
 						where: { id },

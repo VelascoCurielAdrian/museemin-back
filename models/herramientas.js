@@ -1,7 +1,7 @@
 'use strict';
 const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-	class Clasificaciones extends Model {
+	class Herramientas extends Model {
 		static associate(models) {
 			//Usuarios
 			this.belongsTo(models.Usuarios, {
@@ -10,21 +10,27 @@ module.exports = (sequelize, DataTypes) => {
 			this.belongsTo(models.Usuarios, {
 				foreignKey: 'usuarioModificacionID',
 			});
-			this.hasMany(models.Herramientas, {
+			//Clasificacion
+			this.belongsTo(models.Clasificaciones, {
+        as: 'clasificacion',
 				foreignKey: 'clasificacionID',
 			});
 		}
 	}
-	Clasificaciones.init(
+	Herramientas.init(
 		{
+			nombre: DataTypes.STRING,
 			descripcion: DataTypes.STRING,
-			activo: DataTypes.BOOLEAN,
-			estatus: DataTypes.BOOLEAN,
+      precio: DataTypes.DECIMAL,
+      marca: DataTypes.STRING,
+      estado: DataTypes.STRING,
+      activo: DataTypes.BOOLEAN,
+			estatus: DataTypes.BOOLEAN
 		},
 		{
 			sequelize,
-			modelName: 'Clasificaciones',
+			modelName: 'Herramientas',
 		},
 	);
-	return Clasificaciones;
+	return Herramientas;
 };
