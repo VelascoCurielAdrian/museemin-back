@@ -46,8 +46,8 @@ const resolvers = {
 		getHerramienta: async (_, { id }, {}) => {
 			try {
 				if (isNaN(parseInt(id))) throw MENSAJES.id;
-				const exist = await bd.Clasificaciones.count({ where: { id } });
-				if (!exist) throw MENSAJES.existeClasificacion;
+				const exist = await bd.Herramientas.count({ where: { id } });
+				if (!exist) throw MENSAJES.existeHerramienta;
 				return await bd.Herramientas.findOne({
 					where: {
 						id,
@@ -81,7 +81,7 @@ const resolvers = {
 					where: { id: clasificacionID },
 				});
 				if (!existeClasificacion) throw mensajes.existeClasificacion;
-				const dataClasification = await bd.Clasificaciones.findOne({
+				const dataClasificacion = await bd.Clasificaciones.findOne({
 					where: { id: clasificacionID },
 				});
 				const response = await bd.Herramientas.create({ ...input });
@@ -90,7 +90,7 @@ const resolvers = {
 					mensaje: mensajes.successCreate,
 					respuesta: {
 						...response.dataValues,
-						clasificacion: dataClasification.dataValues,
+						clasificacion: dataClasificacion.dataValues,
 					},
 				};
 			} catch (error) {
@@ -104,8 +104,13 @@ const resolvers = {
 				if (!isValid)
 					throw new UserInputError('Input Error', { fields, paths });
 
+				const existeHerramienta = await bd.Herramientas.count({
+					where: { id, estatus: true, activo: true },
+				});
+				if (!existeHerramienta) throw mensajes.existeHerramienta;
+
 				const existeClasificacion = await bd.Clasificaciones.count({
-					where: { id: clasificacionID },
+					where: { id: clasificacionID, estatus: true, activo: true },
 				});
 				if (!existeClasificacion) throw mensajes.existeClasificacion;
 
@@ -134,7 +139,7 @@ const resolvers = {
 			try {
 				if (isNaN(parseInt(id))) throw MENSAJES.id;
 				const existe = await bd.Herramientas.count({ where: { id: id } });
-				if (!existe) throw MENSAJES.existeClasificacion;
+				if (!existe) throw MENSAJES.existeHerramienta;
 
 				await bd.Herramientas.update(
 					{ activo: false },

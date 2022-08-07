@@ -1,7 +1,7 @@
 'use strict';
 const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-	class PerfilModulos extends Model {
+	class PaqueteHerramientas extends Model {
 		static associate(models) {
 			//Usuarios
 			this.belongsTo(models.Usuarios, {
@@ -10,26 +10,22 @@ module.exports = (sequelize, DataTypes) => {
 			this.belongsTo(models.Usuarios, {
 				foreignKey: 'usuarioModificacionID',
 			});
-			//Modulo
-			this.belongsTo(models.Modulos, {
-				foreignKey: 'moduloID',
-			});
-			//Tipos Perfiles
-			this.belongsTo(models.TipoPerfiles, {
-				foreignKey: 'perfilID',
+			//Paquete Herramientas
+			this.hasMany(models.CapturaPaqueteHerramientas, {
+				foreignKey: 'paqueteHerramientaID',
 			});
 		}
 	}
-	PerfilModulos.init(
+	PaqueteHerramientas.init(
 		{
 			descripcion: DataTypes.STRING,
-			perfilID: DataTypes.INTEGER,
-			moduloID: DataTypes.INTEGER,
+			activo: DataTypes.BOOLEAN,
+			estatus: DataTypes.BOOLEAN,
 		},
 		{
 			sequelize,
-			modelName: 'PerfilModulos',
+			modelName: 'PaqueteHerramientas',
 		},
 	);
-	return PerfilModulos;
+	return PaqueteHerramientas;
 };

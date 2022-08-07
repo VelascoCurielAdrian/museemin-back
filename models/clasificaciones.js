@@ -10,6 +10,7 @@ module.exports = (sequelize, DataTypes) => {
 			this.belongsTo(models.Usuarios, {
 				foreignKey: 'usuarioModificacionID',
 			});
+			//Herramienta
 			this.hasMany(models.Herramientas, {
 				foreignKey: 'clasificacionID',
 			});

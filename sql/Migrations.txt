@@ -14,3 +14,7 @@ sequelize model:generate --name Trabajadores --attributes nombres:string,primerA
 sequelize model:generate --name Clasificaciones --attributes descripcion:string
 --MODELO DE HERRAMIENTAS--
 sequelize model:generate --name Herramientas --attributes descripcion:string
+--MODELO DE PQEUETE DE HERRAMIENTAS--
+sequelize model:generate --name PaqueteHerramientas --attributes descripcion:string
+--MODELO DE CAPTURA PQEUETE DE HERRAMIENTAS--
+sequelize model:generate --name CapturaPaqueteHerramientas --attributes descripcion:string, estado:string

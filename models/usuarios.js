@@ -51,30 +51,29 @@ module.exports = (sequelize, DataTypes) => {
 			this.hasMany(models.Herramientas, {
 				foreignKey: 'usuarioModificacionID',
 			});
+			//PaqueteHerramientas
+			this.hasMany(models.PaqueteHerramientas, {
+				foreignKey: 'usuarioRegistroID',
+			});
+			this.hasMany(models.PaqueteHerramientas, {
+				foreignKey: 'usuarioModificacionID',
+			});
+			//PaqueteHerramientas
+			this.hasMany(models.CapturaPaqueteHerramientas, {
+				foreignKey: 'usuarioRegistroID',
+			});
+			this.hasMany(models.CapturaPaqueteHerramientas, {
+				foreignKey: 'usuarioModificacionID',
+			});
 		}
 	}
 	Usuarios.init(
 		{
-			nombre: {
-				type: DataTypes.STRING(50),
-				allowNull: false,
-			},
-			usuario: {
-				type: DataTypes.STRING(50),
-				allowNull: false,
-			},
-			password: {
-				type: DataTypes.STRING,
-				allowNull: false,
-			},
-			correo: {
-				type: DataTypes.STRING(50),
-				allowNull: true,
-			},
-			perfilID: {
-				type: DataTypes.INTEGER,
-				allowNull: false,
-			},
+			nombre: DataTypes.STRING,
+			usuario: DataTypes.STRING,
+			password: DataTypes.STRING,
+			correo: DataTypes.STRING,
+			perfilID: DataTypes.INTEGER,
 		},
 		{
 			sequelize,

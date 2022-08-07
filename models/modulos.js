@@ -23,10 +23,7 @@ module.exports = (sequelize, DataTypes) => {
 	}
 	Modulos.init(
 		{
-			descripcion: {
-				type: DataTypes.STRING(50),
-				allowNull: false,
-			},
+			descripcion: DataTypes.STRING
 		},
 		{
 			sequelize,

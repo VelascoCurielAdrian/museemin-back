@@ -3,7 +3,7 @@ const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
 	class TipoPerfiles extends Model {
 		static associate(models) {
-			// define association here
+			// Usuarios
 			this.hasMany(models.Usuarios, {
 				foreignKey: 'perfilID',
 			});
@@ -14,10 +14,7 @@ module.exports = (sequelize, DataTypes) => {
 	}
 	TipoPerfiles.init(
 		{
-			nombre: {
-				type: DataTypes.STRING(50),
-				allowNull: false,
-			},
+			nombre: DataTypes.STRING,
 		},
 		{
 			sequelize,
