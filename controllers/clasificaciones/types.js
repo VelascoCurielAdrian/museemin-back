@@ -11,10 +11,10 @@ module.exports = `
 
   type clasificacion {
     id: ID!
-    descripcion: String!
+    descripcion: String
     usuarioRegistroID: ID
     activo: Boolean
-    estatus: Boolean
+    estatus: Boolean!
   }
 
   input clasificacionDatos {

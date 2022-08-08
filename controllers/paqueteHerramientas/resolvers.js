@@ -49,31 +49,35 @@ const resolvers = {
 				if (isNaN(parseInt(id))) throw MENSAJES.id;
 				const exist = await bd.PaqueteHerramientas.count({ where: { id } });
 				if (!exist) throw MENSAJES.existePaqueteHerramienta;
-				const response =  await bd.PaqueteHerramientas.findOne({
+				const response = await bd.PaqueteHerramientas.findOne({
 					where: {
 						id,
 						activo: true,
 						estatus: true,
 					},
-					// include: [
-					// 	{
-					// 		model: bd.CapturaPaqueteHerramientas,
-					// 		// as:'paqueteHerramienta',
-					// 		include:[
-					// 			{
-					// 				model: bd.Herramientas,
-					// 				// as: 'herramienta',
-					// 				include:{
-					// 					model: bd.Clasificaciones
-					// 				}
-					// 			}
-					// 		]
-					// 	}
-					// ],
+					include: [
+						{
+							model: bd.CapturaPaqueteHerramientas,
+							where: { activo: true, estatus: true },
+							include: [
+								{
+									model: bd.Herramientas,
+									as: 'herramienta',
+									where: { activo: true, estatus: true },
+									include: [
+										{
+											model: bd.Clasificaciones,
+											as: 'clasificacion',
+											where: { activo: true, estatus: true },
+										},
+									],
+								},
+							],
+						},
+					],
+					subQuery: false,
 				});
-				console.log(response.dataValues);
-
-				return response.dataValues
+				return {...response.dataValues};
 			} catch (error) {
 				return error;
 			}
@@ -82,6 +86,10 @@ const resolvers = {
 	Mutation: {
 		createPaqueteHerramienta: async (_, { input }, {}) => {
 			try {
+				const Existe = await bd.PaqueteHerramientas.count({
+					where: { descripcion: input.descripcion },
+				});
+				if (Existe > 0) throw mensajes.existe;
 				return await SequelizeModel.transaction(async (t) => {
 					let paquetes = [];
 					const {

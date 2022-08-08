@@ -16,9 +16,9 @@ module.exports = `
     precio: Float!
     marca: String!
     estado: String!
-    usuarioRegistroID: ID
-    clasificacionID: ID
-    clasificacion: clasificacion
+    usuarioRegistroID: ID!
+    clasificacionID: ID!
+    clasificacion: clasificacion!
     activo: Boolean
     estatus: Boolean
   }
@@ -28,9 +28,9 @@ module.exports = `
     descripcion: String!
     precio: Float!
     marca: String!
-    usuarioRegistroID: ID
-    clasificacionID: ID
-    estado: String!
-    estatus: Boolean
+    usuarioRegistroID: ID!
+    clasificacionID: ID!
+    estado: String
+    estatus: Boolean!
   }
 `;

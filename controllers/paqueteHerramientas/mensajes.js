@@ -3,6 +3,10 @@ const { formatError } = require('../../helpers/general');
 
 module.exports = {
 	id: new UserInputError('Input Error.', formatError('ID invalido.', 'id')),
+	existe: new UserInputError(
+		'Input Error.',
+		formatError('EL paquete de herramientas ya existe.', 'id'),
+	),
 	existeHerramienta: new UserInputError(
 		'Input Error.',
 		formatError('La Herramienta no existe.', 'id'),

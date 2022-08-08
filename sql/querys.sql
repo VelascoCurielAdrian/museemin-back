@@ -19,4 +19,12 @@ INSERT INTO public."PerfilModulos"("perfilID", "moduloID", "usuarioRegistroID") 
 INSERT INTO public."PerfilModulos"("perfilID", "moduloID", "usuarioRegistroID") VALUES (1,2,1);
 INSERT INTO public."PerfilModulos"("perfilID", "moduloID", "usuarioRegistroID") VALUES (1,3,1);
 INSERT INTO public."PerfilModulos"("perfilID", "moduloID", "usuarioRegistroID") VALUES (1,4,1);
+--Clasificaiciones
+INSERT INTO "Clasificaciones" ("id","descripcion","usuarioRegistroID") 
+VALUES (DEFAULT,'Herreria',1);
+INSERT INTO "Clasificaciones" ("id","descripcion","usuarioRegistroID") 
+VALUES (DEFAULT,'Plomeria',1);
+INSERT INTO "Clasificaciones" ("id","descripcion","usuarioRegistroID") 
+VALUES (DEFAULT,'Hidraulicos',1);
+
 
