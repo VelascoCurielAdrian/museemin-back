@@ -9,6 +9,7 @@ module.exports = {
 				type: Sequelize.INTEGER,
 			},
 			descripcion: {
+				allowNull: false,
 				type: Sequelize.STRING,
 			},
 			activo: {

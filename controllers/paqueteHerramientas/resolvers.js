@@ -14,19 +14,22 @@ const resolvers = {
 			{ limit = 25, offset, order = ['id'] },
 		) => {
 			try {
-				return await bd.Herramientas.findAndCountAll({
+				return await bd.PaqueteHerramientas.findAndCountAll({
 					where: {
 						activo: true,
 						estatus: true,
 					},
 					include: [
 						{
-							model: bd.Clasificaciones,
-							as: 'clasificacion',
-							where: {
-								activo: true,
-								estatus: true,
-							},
+							model: bd.CapturaPaqueteHerramientas,
+							where: { activo: true, estatus: true },
+							include: [
+								{
+									model: bd.Herramientas,
+									as: 'herramienta',
+									where: { activo: true, estatus: true },
+								},
+							],
 						},
 					],
 					order: orderFormat(order),
@@ -64,20 +67,12 @@ const resolvers = {
 									model: bd.Herramientas,
 									as: 'herramienta',
 									where: { activo: true, estatus: true },
-									include: [
-										{
-											model: bd.Clasificaciones,
-											as: 'clasificacion',
-											where: { activo: true, estatus: true },
-										},
-									],
 								},
 							],
 						},
 					],
-					subQuery: false,
 				});
-				return {...response.dataValues};
+				return { ...response.dataValues };
 			} catch (error) {
 				return error;
 			}
@@ -119,7 +114,7 @@ const resolvers = {
 							if (!existeHerramienta) throw mensajes.existeHerramienta;
 							const herramienta = await bd.Herramientas.findOne({
 								where: { id: captura.herramientaID },
-								include: { model: bd.Clasificaciones, as: 'clasificacion' },
+								include: [{ model: bd.Clasificaciones, as: 'clasificacion' }],
 								transaction: t,
 							});
 
@@ -184,7 +179,7 @@ const resolvers = {
 							if (!existeHerramienta) throw mensajes.existeHerramienta;
 							const herramienta = await bd.Herramientas.findOne({
 								where: { id: captura.herramientaID },
-								include: { model: bd.Clasificaciones, as: 'clasificacion' },
+								include: [{ model: bd.Clasificaciones, as: 'clasificacion' }],
 								transaction: t,
 							});
 

@@ -11,9 +11,9 @@ module.exports = `
 
   type clasificacion {
     id: ID!
-    descripcion: String
-    usuarioRegistroID: ID
-    activo: Boolean
+    descripcion: String!
+    usuarioRegistroID: ID!
+    activo: Boolean!
     estatus: Boolean!
   }
 
