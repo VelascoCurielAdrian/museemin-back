@@ -7,12 +7,9 @@ const mensajes = require('./mensajes');
 
 const resolvers = {
 	Query: {
-		getAllClasificacion: async (
-			root,
-			{ limit = 25, offset, order = ['id'] },
-		) => {
+		getAllCliente: async (root, { limit = 25, offset, order = ['id'] }) => {
 			try {
-				return await bd.Clasificaciones.findAndCountAll({
+				return await bd.Clientes.findAndCountAll({
 					where: {
 						activo: true,
 						estatus: true,
@@ -32,12 +29,12 @@ const resolvers = {
 				return error;
 			}
 		},
-		getClasificacion: async (_, { id }, {}) => {
+		getCliente: async (_, { id }, {}) => {
 			try {
 				if (isNaN(parseInt(id))) throw MENSAJES.id;
-				const exist = await bd.Clasificaciones.count({ where: { id } });
-				if (!exist) throw MENSAJES.existeClasificacion;
-				return await bd.Clasificaciones.findOne({
+				const exist = await bd.Clientes.count({ where: { id, activo: true, estatus: true } });
+				if (!exist) throw MENSAJES.noExiste;
+				return await bd.Clientes.findOne({
 					where: {
 						id,
 						activo: true,
@@ -50,16 +47,16 @@ const resolvers = {
 		},
 	},
 	Mutation: {
-		createClasificacion: async (_, { input }, {}) => {
+		createCliente: async (_, { input }, {}) => {
 			try {
 				const { isValid, fields, paths } = validator(input);
 				if (!isValid)
 					throw new UserInputError('Input Error', { fields, paths });
-				const Existe = await bd.Clasificaciones.count({
-					where: { descripcion: input.descripcion },
+				const Existe = await bd.Clientes.count({
+					where: { nombre: input.nombre, activo: true, estatus: true },
 				});
 				if (Existe > 0) throw mensajes.existe;
-				const response = await bd.Clasificaciones.create({ ...input });
+				const response = await bd.Clientes.create({ ...input });
 				return {
 					mensaje: mensajes.successCreate,
 					respuesta: response.dataValues,
@@ -68,15 +65,15 @@ const resolvers = {
 				return error;
 			}
 		},
-		updateClasificacion: async (_, { id, input }, {}) => {
+		updateCliente: async (_, { id, input }, {}) => {
 			try {
 				const { isValid, fields, paths } = validator(input);
-				if (isNaN(parseInt(id))) throw MENSAJES.id;
-				const existe = await bd.Clasificaciones.count({ where: { id } });
-				if (!existe) throw MENSAJES.existeClasificacion;
 				if (!isValid)
 					throw new UserInputError('Input Error', { fields, paths });
-				const response = await bd.Clasificaciones.update(input, {
+				if (isNaN(parseInt(id))) throw MENSAJES.id;
+				const existe = await bd.Clientes.count({ where: { id } });
+				if (!existe) throw MENSAJES.noExiste;
+				const response = await bd.Clientes.update(input, {
 					where: { id },
 					returning: true,
 					plain: true,
@@ -89,18 +86,17 @@ const resolvers = {
 				return error;
 			}
 		},
-		deleteClasificacion: async (_, { id }, {}) => {
+		deleteCliente: async (_, { id }, {}) => {
 			try {
 				if (isNaN(parseInt(id))) throw MENSAJES.id;
-				const existe = await bd.Clasificaciones.count({ where: { id: id } });
-				if (!existe) throw MENSAJES.existeClasificacion;
-
-				const response = await bd.Clasificaciones.update(
+				const existe = await bd.Clientes.count({ where: { id: id } });
+				if (!existe) throw MENSAJES.noExiste;
+				const response = await bd.Clientes.update(
 					{ activo: false },
 					{
 						where: { id },
 						returning: true,
-						plain: true, 
+						plain: true,
 					},
 				);
 				return {

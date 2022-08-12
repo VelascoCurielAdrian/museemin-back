@@ -1,18 +1,17 @@
 module.exports = `
-  type ClasificacionResponse {
+  type ClienteResponse {
     count: Int
-    rows: [clasificacion]
+    rows: [cliente]
   }
 
-  type responseClasificacion {
+  type responseCliente {
     mensaje: String!
-    respuesta: clasificacion!
+    respuesta: cliente!
   }
 
   type cliente {
     id: ID!
     nombre: String!
-    telefono: String!
     primerTelefono: String!
     segundoTelefono: String!
     correo: String!
@@ -22,9 +21,8 @@ module.exports = `
     estatus: Boolean!
   }
 
-  input clasificacionDatos {
+  input clienteDatos {
     nombre: String!
-    telefono: String!
     primerTelefono: String!
     segundoTelefono: String!
     correo: String!

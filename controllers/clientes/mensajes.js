@@ -3,15 +3,15 @@ const { formatError } = require('../../helpers/general');
 
 module.exports = {
 	id: new UserInputError('Input Error.', formatError('ID invalido.', 'id')),
-	existeClasificacion: new UserInputError(
-		'Input Error.',
-		formatError('La clasificacion no existe.', 'id'),
-	),
 	existe: new UserInputError(
 		'Input Error.',
-		formatError('La clasificacion ya existe.', 'descripcion'),
+		formatError('El cliente ya existe.', 'nombre'),
 	),
-	successCreate: 'Clasificacion almacenada correctamente.',
-	successUpdate: 'Clasificacion actualizada correctamente.',
-	successDelete: 'Clasificacion eliminada correctamente.',
+	noExiste: new UserInputError(
+		'Input Error.',
+		formatError('El cliente no existe.', 'id'),
+	),
+	successCreate: 'Cliente almacenado correctamente.',
+	successUpdate: 'Cliente actualizado correctamente.',
+	successDelete: 'Cliente eliminado correctamente.',
 };
