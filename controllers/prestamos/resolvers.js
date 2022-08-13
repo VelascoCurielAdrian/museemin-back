@@ -8,10 +8,7 @@ const { sequelize: SequelizeModel } = require('../../models');
 
 const resolvers = {
 	Query: {
-		getAllPaqueteHerramientas: async (
-			root,
-			{ limit = 25, offset, order = ['id'] },
-		) => {
+		getAllPrestamo: async (root, { limit = 25, offset, order = ['id'] }) => {
 			try {
 				return await bd.PaqueteHerramientas.findAndCountAll({
 					where: {
@@ -46,7 +43,7 @@ const resolvers = {
 				return error;
 			}
 		},
-		getPaqueteHerramienta: async (_, { id }, {}) => {
+		getPrestamo: async (_, { id }, {}) => {
 			try {
 				if (isNaN(parseInt(id))) throw MENSAJES.id;
 				const exist = await bd.PaqueteHerramientas.count({ where: { id } });
@@ -78,29 +75,37 @@ const resolvers = {
 		},
 	},
 	Mutation: {
-		createPaqueteHerramienta: async (_, { input }, {}) => {
+		createPrestamo: async (_, { input }, {}) => {
 			try {
-				const Existe = await bd.PaqueteHerramientas.count({
-					where: { descripcion: input.descripcion },
-				});
-				if (Existe > 0) throw mensajes.existe;
 				return await SequelizeModel.transaction(async (t) => {
-					let paquetes = [];
+					let herramientasPrestadas = [];
+					let paquetesPrestados = [];
 					const {
 						descripcion,
-						usuarioRegistroID,
+						estado,
+						semana,
+						fechaEntrega,
+						fechaSalida,
 						estatus,
-						CapturaPaqueteHerramientas: datosCapturaPaqueteHerramientas,
+						usuarioRegistroID,
+						trabajadorID,
+						CapturaPrestamosHerramientas: datosCapturaPrestamoHerramienta,
+						CapturaPrestamosPaqueteHerramientas: datosCapturaPrestamoPaquete,
 					} = input;
 
-					const { dataValues } = await bd.PaqueteHerramientas.create({
+					const { dataValues } = await bd.Prestamos.create({
 						descripcion,
-						usuarioRegistroID,
+						estado,
+						semana,
+						fechaEntrega,
+						fechaSalida,
 						estatus,
+						usuarioRegistroID,
+						trabajadorID,
 					});
 
 					await Promise.all(
-						datosCapturaPaqueteHerramientas.map(async (captura) => {
+						datosCapturaPrestamoHerramienta.map(async (captura) => {
 							const { id } = dataValues;
 
 							const existeHerramienta = await bd.Herramientas.count({
@@ -113,13 +118,12 @@ const resolvers = {
 							if (!existeHerramienta) throw mensajes.existeHerramienta;
 							const herramienta = await bd.Herramientas.findOne({
 								where: { id: captura.herramientaID },
-								include: [{ model: bd.Clasificaciones, as: 'clasificacion' }],
 								transaction: t,
 							});
 
-							const dataCaptura = await bd.CapturaPaqueteHerramientas.create(
+							const dataCaptura = await bd.CapturaPrestamosHerramientas.create(
 								{
-									paqueteHerramientaID: id,
+									prestamoID: id,
 									...captura,
 								},
 								{ transaction: t },
@@ -130,14 +134,47 @@ const resolvers = {
 								dataCaptura.dataValues,
 								herramientas,
 							);
-							paquetes.push(detallesCaptura);
+							herramientasPrestadas.push(detallesCaptura);
+						}),
+						
+						datosCapturaPrestamoPaquete.map(async (captura) => {
+							const { id } = dataValues;
+
+							const existeHerramienta = await bd.PaqueteHerramientas.count({
+								where: {
+									id: captura.paqueteHerramientaID,
+									estatus: true,
+									activo: true,
+								},
+							});
+							if (!existeHerramienta) throw mensajes.existeHerramienta;
+							const paqueteHerramienta = await bd.PaqueteHerramientas.findOne({
+								where: { id: captura.paqueteHerramientaID },
+								transaction: t,
+							});
+
+							const dataCaptura = await bd.CapturaPrestamosPaqueteHerramientas.create(
+								{
+									prestamoID: id,
+									...captura,
+								},
+								{ transaction: t },
+							);
+
+							const paqueteHerramientas = { paqueteHerramienta };
+							const detallesCaptura = Object.assign(
+								dataCaptura.dataValues,
+								paqueteHerramientas,
+							);
+							paquetesPrestados.push(detallesCaptura);
 						}),
 					);
 					return {
 						mensaje: mensajes.successCreate,
 						respuesta: {
 							...dataValues,
-							CapturaPaqueteHerramientas: paquetes,
+							CapturaPrestamosHerramientas: herramientasPrestadas,
+							CapturaPrestamosPaqueteHerramientas: paquetesPrestados,
 						},
 					};
 				});
@@ -145,7 +182,7 @@ const resolvers = {
 				return error;
 			}
 		},
-		updatePaqueteHerramienta: async (_, { id, input }, {}) => {
+		updatePrestamo: async (_, { id, input }, {}) => {
 			try {
 				const existePaquete = await bd.PaqueteHerramientas.count({
 					where: { id, estatus: true, activo: true },
@@ -210,7 +247,7 @@ const resolvers = {
 				return error;
 			}
 		},
-		deletePaqueteHerramienta: async (_, { id }, {}) => {
+		deletePrestamo: async (_, { id }, {}) => {
 			try {
 				const existePaquete = await bd.PaqueteHerramientas.count({
 					where: { id, estatus: true, activo: true },

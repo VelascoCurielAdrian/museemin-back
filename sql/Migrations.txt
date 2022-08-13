@@ -18,7 +18,22 @@ sequelize model:generate --name Herramientas --attributes descripcion:string
 sequelize model:generate --name PaqueteHerramientas --attributes descripcion:string
 --MODELO DE CAPTURA PQEUETE DE HERRAMIENTAS--
 sequelize model:generate --name CapturaPaqueteHerramientas --attributes descripcion:string, estado:string
---MODELO De Clientes --
-sequelize model:generate --name Prestamos --attributes descripcion:string, estado:string
---MODELO De PRESTAMOS --
+--MODELO De CLIENTES --
 sequelize model:generate --name Clientes --attributes  nombre:string,telefono:string,telefono2:string,correo:string,domicilio:string
+--MODELO De PRESTAMOS --
+sequelize model:generate --name Prestamos --attributes descripcion:string
+--MODELO De CAPTURA DE HERRAMIENTAS PRESTADAS --
+sequelize model:generate --name CapturaPrestamosHerramientas --attributes herramientaID:integer
+--MODELO De CAPTURA DE PAQUETE DE HERRAMIENTAS PRESTADAS --
+sequelize model:generate --name CapturaPrestamosPaqueteHerramientas --attributes paqueteHerramientaID:integer
+
+descripcion
+Trabajadores
+Herramienta
+PaqueteHerramientas
+Clientes
+semana
+fechaSalida
+fechaEntrega
+estatus
+

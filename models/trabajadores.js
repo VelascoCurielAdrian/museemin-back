@@ -10,6 +10,10 @@ module.exports = (sequelize, DataTypes) => {
 			this.belongsTo(models.Usuarios, {
 				foreignKey: 'usuarioModificacionID',
 			});
+			// Prestamos
+			this.hasMany(models.Prestamos, {
+				foreignKey: 'trabajadorID',
+			});
 		}
 	}
 	Trabajadores.init(
@@ -24,7 +28,7 @@ module.exports = (sequelize, DataTypes) => {
 			referencia: DataTypes.STRING,
 			numeroExterior: DataTypes.STRING,
 			activo: DataTypes.BOOLEAN,
-			estatus: DataTypes.BOOLEAN
+			estatus: DataTypes.BOOLEAN,
 		},
 		{
 			sequelize,
