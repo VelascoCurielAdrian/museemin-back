@@ -11,7 +11,7 @@ module.exports = `
 
   type paqueteHerramienta {
     id: ID!
-    descripcion: String!
+    descripcion: String
     usuarioRegistroID: ID
     CapturaPaqueteHerramientas: [CapturaPaqueteHerramientas]!
     activo: Boolean

@@ -18,11 +18,11 @@ module.exports = {
         type: Sequelize.STRING(20)
       },
       fechaSalida: {
-        allowNull: false,
+        allowNull: true,
         type: Sequelize.DATE
       },
       fechaEntrega: {
-        allowNull: false,
+        allowNull: true,
         type: Sequelize.DATE
       },
       estatus: {

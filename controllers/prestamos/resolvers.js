@@ -10,20 +10,32 @@ const resolvers = {
 	Query: {
 		getAllPrestamo: async (root, { limit = 25, offset, order = ['id'] }) => {
 			try {
-				return await bd.PaqueteHerramientas.findAndCountAll({
+				return await bd.Prestamos.findAndCountAll({
 					where: {
 						activo: true,
 						estatus: true,
 					},
 					include: [
 						{
-							model: bd.CapturaPaqueteHerramientas,
+							model: bd.Trabajadores,
+							as: 'trabajador',
 							where: { activo: true, estatus: true },
+						},
+						{
+							model: bd.CapturaPrestamosHerramientas,
 							include: [
 								{
 									model: bd.Herramientas,
 									as: 'herramienta',
-									where: { activo: true, estatus: true },
+								},
+							],
+						},
+						{
+							model: bd.CapturaPrestamosPaqueteHerramientas,
+							include: [
+								{
+									model: bd.PaqueteHerramientas,
+									as: 'paqueteHerramienta',
 								},
 							],
 						},
@@ -136,7 +148,7 @@ const resolvers = {
 							);
 							herramientasPrestadas.push(detallesCaptura);
 						}),
-						
+
 						datosCapturaPrestamoPaquete.map(async (captura) => {
 							const { id } = dataValues;
 
@@ -153,13 +165,14 @@ const resolvers = {
 								transaction: t,
 							});
 
-							const dataCaptura = await bd.CapturaPrestamosPaqueteHerramientas.create(
-								{
-									prestamoID: id,
-									...captura,
-								},
-								{ transaction: t },
-							);
+							const dataCaptura =
+								await bd.CapturaPrestamosPaqueteHerramientas.create(
+									{
+										prestamoID: id,
+										...captura,
+									},
+									{ transaction: t },
+								);
 
 							const paqueteHerramientas = { paqueteHerramienta };
 							const detallesCaptura = Object.assign(
