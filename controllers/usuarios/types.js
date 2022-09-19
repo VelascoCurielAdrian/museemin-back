@@ -3,9 +3,30 @@ module.exports = `
     id: ID!
     nombre: String!
     usuario: String!
-    password: String!
     correo: String,
     perfilID: ID!
+    perfil: tipoPerfil
+  }
+
+  type tipoPerfil {
+    id: ID!
+    nombre: String!
+    activo: Boolean!
+    estatus: Boolean!
+  }
+
+  type Secciones {
+    id: ID!
+    descripcion: String!
+    usuarioRegistroID: ID!
+  }
+
+  type Modulos {
+    id: ID!
+    descripcion: String!
+    moduloWeb: Boolean!
+    usuarioRegistroID: ID!
+    seccionID: ID!
   }
 
   type Response {

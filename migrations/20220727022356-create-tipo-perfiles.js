@@ -23,13 +23,16 @@ module.exports = {
         defaultValue: true
       },
       createdAt: {
+        allowNull: true,
         type: Sequelize.DATE,
-        field: 'fechaRegistro',
       },
       updatedAt: {
+        allowNull: true,
         type: Sequelize.DATE,
-        field: 'fechaModificacion',
       },
+      deletedAt: {
+				type: Sequelize.DATE,
+			},
     });
   },
   async down(queryInterface, Sequelize) {

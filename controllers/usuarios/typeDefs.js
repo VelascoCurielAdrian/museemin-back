@@ -1,6 +1,7 @@
 module.exports = `
   type Query{
     getUsuarioAuth: Usuario!
+    getModulos: Modulos!
   }
   
   type Mutation {

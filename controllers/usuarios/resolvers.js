@@ -8,15 +8,27 @@ const bcrypt = require('bcryptjs');
 
 dotenv.config({ path: '.env' });
 
-const createToken = (UsuarioDatos, secret, expiresIn) => {
-	const { id, nombre, correo, usuario } = UsuarioDatos;
-	return jwt.sign({ id, nombre, correo, usuario }, secret, { expiresIn });
+const createToken = (UserData, secret, expiresIn) => {
+	const { id, nombre, correo, usuario, perfil } = UserData;
+	return jwt.sign({ id, nombre, correo, usuario, perfil }, secret, {
+		expiresIn,
+	});
 };
 
 const resolvers = {
 	Query: {
 		getUsuarioAuth: async (_, {}, ctx) => {
-			return ctx.UsuarioDatos;
+			return ctx.UserData;
+		},
+		getModulos: async (root, {}, {}) => {
+			try {
+				const response = await bd.Modulos.findAll({});
+				console.log(response);
+				return response;
+			} catch (error) {
+				console.log(error);
+				return error;
+			}
 		},
 	},
 	Mutation: {
@@ -43,8 +55,14 @@ const resolvers = {
 					throw new UserInputError('Input Error', { fields, paths });
 				const usernameAvailability = await bd.Usuarios.findOne({
 					where: { usuario },
+					include: [
+						{
+							model: bd.TipoPerfiles,
+							as: 'perfil',
+						},
+					],
 				});
-				if (!usernameAvailability) throw MESSAGES.exist;
+				if (!usernameAvailability) throw MESSAGES.existe;
 				const suuccesPassword = await bcrypt.compare(
 					password,
 					usernameAvailability.password,

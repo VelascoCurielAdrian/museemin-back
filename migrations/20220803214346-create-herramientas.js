@@ -1,7 +1,7 @@
-'use strict';
+"use strict";
 module.exports = {
 	async up(queryInterface, Sequelize) {
-		await queryInterface.createTable('Herramientas', {
+		await queryInterface.createTable("Herramientas", {
 			id: {
 				allowNull: false,
 				autoIncrement: true,
@@ -25,7 +25,7 @@ module.exports = {
 				allowNull: false,
 			},
 			estado: {
-				type: Sequelize.STRING(50),
+				type: Sequelize.INTEGER,
 				allowNull: false,
 			},
 			activo: {
@@ -42,8 +42,8 @@ module.exports = {
 				type: Sequelize.INTEGER,
 				allowNull: false,
 				references: {
-					model: 'Usuarios',
-					key: 'id',
+					model: "Usuarios",
+					key: "id",
 				},
 			},
 			createdAt: {
@@ -54,8 +54,8 @@ module.exports = {
 				type: Sequelize.INTEGER,
 				allowNull: true,
 				references: {
-					model: 'Usuarios',
-					key: 'id',
+					model: "Usuarios",
+					key: "id",
 				},
 			},
 			updatedAt: {
@@ -72,13 +72,13 @@ module.exports = {
 					isInt: true,
 				},
 				references: {
-					model: 'Clasificaciones',
-					key: 'id',
+					model: "Clasificaciones",
+					key: "id",
 				},
 			},
 		});
 	},
 	async down(queryInterface, Sequelize) {
-		await queryInterface.dropTable('Herramientas');
+		await queryInterface.dropTable("Herramientas");
 	},
 };

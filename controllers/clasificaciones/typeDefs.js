@@ -1,6 +1,7 @@
 module.exports = `
   type Query{
-    getAllClasificacion(offset: Int, limit: Int): ClasificacionResponse!
+    getAllCountClasificacion(offset: Int, limit: Int): ClasificacionResponse!
+    getAllClasificaciones:[clasificacion]
     getClasificacion(id: ID!): clasificacion!
   }
   

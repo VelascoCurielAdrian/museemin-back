@@ -6,9 +6,7 @@ const dotenv = require('dotenv');
 const server = new ApolloServer({
 	schema,
 	context: async ({ req }) => {
-		//obtener token del servidor
 		const token = req.headers.authorization || '';
-
 		if (token) {
 			try {
 				const UserData = await jwt.verify(

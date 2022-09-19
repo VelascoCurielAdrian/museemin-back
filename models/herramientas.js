@@ -1,27 +1,27 @@
-'use strict';
-const { Model } = require('sequelize');
+"use strict";
+const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
 	class Herramientas extends Model {
 		static associate(models) {
 			//Usuarios
 			this.belongsTo(models.Usuarios, {
-				foreignKey: 'usuarioRegistroID',
+				foreignKey: "usuarioRegistroID",
 			});
 			this.belongsTo(models.Usuarios, {
-				foreignKey: 'usuarioModificacionID',
+				foreignKey: "usuarioModificacionID",
 			});
 			//Clasificacion
 			this.belongsTo(models.Clasificaciones, {
-				as: 'clasificacion',
-				foreignKey: 'clasificacionID',
+				as: "clasificacion",
+				foreignKey: "clasificacionID",
 			});
 			//PaqueteHerramientas
 			this.hasMany(models.CapturaPaqueteHerramientas, {
-				foreignKey: 'herramientaID',
+				foreignKey: "herramientaID",
 			});
 			//CapturaPrestamosHerramientas
 			this.hasMany(models.CapturaPrestamosHerramientas, {
-				foreignKey: 'herramientaID',
+				foreignKey: "herramientaID",
 			});
 		}
 	}
@@ -31,13 +31,13 @@ module.exports = (sequelize, DataTypes) => {
 			descripcion: DataTypes.STRING,
 			precio: DataTypes.DECIMAL,
 			marca: DataTypes.STRING,
-			estado: DataTypes.STRING,
+			estado: DataTypes.INTEGER,
 			activo: DataTypes.BOOLEAN,
 			estatus: DataTypes.BOOLEAN,
 		},
 		{
 			sequelize,
-			modelName: 'Herramientas',
+			modelName: "Herramientas",
 		},
 	);
 	return Herramientas;

@@ -1,16 +1,15 @@
-const validator = require('./validator');
-const MENSAJES = require('./mensajes');
-const bd = require('../../models');
-const { UserInputError } = require('apollo-server');
-const { objectFilter, orderFormat } = require('../../helpers/general');
-const mensajes = require('./mensajes');
-const { response } = require('express');
+const validator = require("./validator");
+const MENSAJES = require("./mensajes");
+const bd = require("../../models");
+const { UserInputError } = require("apollo-server");
+const { objectFilter, orderFormat } = require("../../helpers/general");
+const mensajes = require("./mensajes");
 
 const resolvers = {
 	Query: {
 		getAllHerramientas: async (
 			root,
-			{ limit = 25, offset, order = ['id'] },
+			{ limit = 25, offset, order = ["id"] },
 		) => {
 			try {
 				return await bd.Herramientas.findAndCountAll({
@@ -21,7 +20,7 @@ const resolvers = {
 					include: [
 						{
 							model: bd.Clasificaciones,
-							as: 'clasificacion',
+							as: "clasificacion",
 							where: {
 								activo: true,
 								estatus: true,
@@ -57,7 +56,7 @@ const resolvers = {
 					include: [
 						{
 							model: bd.Clasificaciones,
-							as: 'clasificacion',
+							as: "clasificacion",
 							where: {
 								activo: true,
 								estatus: true,
@@ -76,7 +75,7 @@ const resolvers = {
 				const { clasificacionID } = input;
 				const { isValid, fields, paths } = validator(input);
 				if (!isValid)
-					throw new UserInputError('Input Error', { fields, paths });
+					throw new UserInputError("Input Error", { fields, paths });
 				const existeClasificacion = await bd.Clasificaciones.count({
 					where: { id: clasificacionID },
 				});
@@ -102,10 +101,10 @@ const resolvers = {
 				const { clasificacionID } = input;
 				const { isValid, fields, paths } = validator(input);
 				if (!isValid)
-					throw new UserInputError('Input Error', { fields, paths });
+					throw new UserInputError("Input Error", { fields, paths });
 
 				const existeHerramienta = await bd.Herramientas.count({
-					where: { id, estatus: true, activo: true },
+					where: { id, activo: true },
 				});
 				if (!existeHerramienta) throw mensajes.existeHerramienta;
 
@@ -155,7 +154,7 @@ const resolvers = {
 					include: [
 						{
 							model: bd.Clasificaciones,
-							as: 'clasificacion',
+							as: "clasificacion",
 						},
 					],
 				});

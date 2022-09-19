@@ -22,7 +22,6 @@ module.exports = (sequelize, DataTypes) => {
 	}
 	PerfilModulos.init(
 		{
-			descripcion: DataTypes.STRING,
 			perfilID: DataTypes.INTEGER,
 			moduloID: DataTypes.INTEGER,
 		},

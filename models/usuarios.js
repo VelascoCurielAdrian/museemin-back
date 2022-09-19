@@ -7,6 +7,7 @@ module.exports = (sequelize, DataTypes) => {
 			// define association here
 			//Perfiles
 			this.belongsTo(models.TipoPerfiles, {
+				as: 'perfil',
 				foreignKey: 'perfilID',
 			});
 			//Secciones
