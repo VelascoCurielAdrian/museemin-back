@@ -10,7 +10,6 @@ const Validator = (input) => {
     primerTelefono: { empty: false },
     segundoTelefono: { empty: false },
     correo: { empty: false },
-    domicilio: { empty: false },
 	};
 
 	const response = checkEmptyOrRequired(fields, input);

@@ -24,8 +24,28 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false,
       },
-      domicilio: {
+      colonia: {
         type: Sequelize.STRING,
+        allowNull: false,
+      },
+      calles: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
+      referencia: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
+      numeroExterior: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+      },
+      codigoPostal: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+      },
+      numeroInterior: {
+        type: Sequelize.INTEGER,
         allowNull: false,
       },
       activo: {

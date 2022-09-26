@@ -15,7 +15,12 @@ module.exports = `
     primerTelefono: String!
     segundoTelefono: String!
     correo: String!
-    domicilio: String!
+    colonia: String
+    calles: String
+    referencia: String
+    numeroExterior: Int
+    numeroInterior: Int
+    codigoPostal: Int
     usuarioRegistroID: ID!
     activo: Boolean!
     estatus: Boolean!
@@ -26,7 +31,12 @@ module.exports = `
     primerTelefono: String!
     segundoTelefono: String!
     correo: String!
-    domicilio: String!
+    colonia: String
+    calles: String
+    referencia: String
+    numeroExterior: Int
+    numeroInterior: Int
+    codigoPostal: Int
     usuarioRegistroID: ID,
     estatus: Boolean!
   }

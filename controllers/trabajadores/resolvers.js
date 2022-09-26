@@ -34,7 +34,7 @@ const resolvers = {
 				if (isNaN(parseInt(id))) throw MENSAJES.id;
 				const exist = await bd.Trabajadores.count({ where: { id } });
 				if (!exist) throw MENSAJES.existeTrabajador;
-				return await db.Trabajadores.findOne({
+				return await bd.Trabajadores.findOne({
 					where: {
 						id,
 						activo: true,
@@ -77,7 +77,7 @@ const resolvers = {
 					where: { id },
 					returning: true,
 					plain: true,
-				});
+				});  
 				return {
 					mensaje: mensajes.successUpdate,
 					respuesta: response[1].dataValues,
