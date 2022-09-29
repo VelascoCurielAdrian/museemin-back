@@ -1,14 +1,14 @@
-const validator = require("./validator");
-const MENSAJES = require("./mensajes");
-const bd = require("../../models");
-const { UserInputError } = require("apollo-server");
-const { objectFilter, orderFormat } = require("../../helpers/general");
+const validator = require('./validator');
+const MENSAJES = require('./mensajes');
+const bd = require('../../models');
+const { UserInputError } = require('apollo-server');
+const { objectFilter, orderFormat } = require('../../helpers/general');
 
 const resolvers = {
 	Query: {
 		getAllCountClasificacion: async (
 			root,
-			{ limit = 25, offset, order = ["id"] },
+			{ limit = 25, offset, order = ['id'] },
 		) => {
 			try {
 				return await bd.Clasificaciones.findAndCountAll({
@@ -66,7 +66,7 @@ const resolvers = {
 			try {
 				const { isValid, fields, paths } = validator(input);
 				if (!isValid)
-					throw new UserInputError("Input Error", { fields, paths });
+					throw new UserInputError('Input Error', { fields, paths });
 				const Existe = await bd.Clasificaciones.count({
 					where: { descripcion: input.descripcion },
 				});
@@ -87,7 +87,7 @@ const resolvers = {
 				const existe = await bd.Clasificaciones.count({ where: { id } });
 				if (!existe) throw MENSAJES.existeClasificacion;
 				if (!isValid)
-					throw new UserInputError("Input Error", { fields, paths });
+					throw new UserInputError('Input Error', { fields, paths });
 				const response = await bd.Clasificaciones.update(input, {
 					where: { id },
 					returning: true,

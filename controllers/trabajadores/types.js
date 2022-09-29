@@ -14,6 +14,7 @@ module.exports = `
     nombres: String!
     primerApellido: String!
     segundoApellido: String!
+    sexo: String!
     telefono: String!
     correo: String!
     colonia: String
@@ -29,6 +30,7 @@ module.exports = `
     nombres: String!
     primerApellido: String!
     segundoApellido: String!
+    sexo: String!
     telefono: String!
     correo: String!
     colonia: String
