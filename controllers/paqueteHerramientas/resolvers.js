@@ -10,13 +10,23 @@ const resolvers = {
 	Query: {
 		getAllPaqueteHerramientas: async (
 			root,
-			{ limit = 25, offset, order = ['id'] },
+			{ limit = 25, offset, order = ['id'], txtBusqueda },
 		) => {
 			try {
 				return await bd.PaqueteHerramientas.findAndCountAll({
 					where: {
-						activo: true,
-						estatus: true,
+						[bd.Sequelize.Op.and]: [
+							{ activo: true },
+							txtBusqueda && {
+								[bd.Sequelize.Op.or]: [
+									{
+										descripcion: {
+											[bd.Sequelize.Op.iLike]: `%${txtBusqueda}%`,
+										},
+									},
+								],
+							},
+						],
 					},
 					include: [
 						{

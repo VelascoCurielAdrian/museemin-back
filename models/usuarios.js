@@ -94,6 +94,13 @@ module.exports = (sequelize, DataTypes) => {
 			this.hasMany(models.CapturaPrestamosPaqueteHerramientas, {
 				foreignKey: 'usuarioModificacionID',
 			});
+			//tipoServicios
+			this.hasMany(models.TipoServicios, {
+				foreignKey: 'usuarioRegistroID',
+			});
+			this.hasMany(models.TipoServicios, {
+				foreignKey: 'usuarioModificacionID',
+			});
 		}
 	}
 	Usuarios.init(

@@ -1,5 +1,5 @@
 -- Table: public.TipoPerfiles
--- DROP TABLE IF EXISTS public."TipoPerfiles";
+DROP TABLE IF EXISTS public."TipoPerfiles";
 CREATE TABLE IF NOT EXISTS public."TipoPerfiles" (
     id integer NOT NULL DEFAULT nextval('"TipoPerfiles_id_seq"' :: regclass),
     nombre character varying(50) COLLATE pg_catalog."default" NOT NULL,

@@ -1,6 +1,6 @@
 module.exports = `
   type Query{
-    getAllTrabajador(offset: Int, limit: Int): TrabajadorResponse!
+    getAllTrabajador(offset: Int, limit: Int, txtBusqueda: String): TrabajadorResponse!
     getTrabajador(id: ID!): trabajador!
   }
   

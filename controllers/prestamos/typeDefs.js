@@ -1,6 +1,6 @@
 module.exports = `
   type Query{
-    getAllPrestamo(offset: Int, limit: Int): PrestamoResponse!
+    getAllPrestamo(offset: Int, limit: Int, txtBusqueda: String): PrestamoResponse!
     getPrestamo(id: ID!): prestamo!
   }
   

@@ -1,26 +1,37 @@
-const validator = require("./validator");
-const MENSAJES = require("./mensajes");
-const bd = require("../../models");
-const { UserInputError } = require("apollo-server");
-const { objectFilter, orderFormat } = require("../../helpers/general");
-const mensajes = require("./mensajes");
+const validator = require('./validator');
+const MENSAJES = require('./mensajes');
+const bd = require('../../models');
+const { UserInputError } = require('apollo-server');
+const { objectFilter, orderFormat } = require('../../helpers/general');
+const mensajes = require('./mensajes');
 
 const resolvers = {
 	Query: {
 		getAllHerramientas: async (
 			root,
-			{ limit = 25, offset, order = ["id"] },
+			{ limit = 25, offset, order = ['id'], txtBusqueda },
 		) => {
 			try {
 				return await bd.Herramientas.findAndCountAll({
 					where: {
-						activo: true,
-						estatus: true,
+						[bd.Sequelize.Op.and]: [
+							{ activo: true },
+							txtBusqueda && {
+								[bd.Sequelize.Op.or]: [
+									{ nombre: { [bd.Sequelize.Op.iLike]: `%${txtBusqueda}%` } },
+									{
+										'$clasificacion.descripcion$': {
+											[bd.Sequelize.Op.iLike]: `%${txtBusqueda}%`,
+										},
+									},
+								],
+							},
+						],
 					},
 					include: [
 						{
 							model: bd.Clasificaciones,
-							as: "clasificacion",
+							as: 'clasificacion',
 							where: {
 								activo: true,
 								estatus: true,
@@ -51,12 +62,11 @@ const resolvers = {
 					where: {
 						id,
 						activo: true,
-						estatus: true,
 					},
 					include: [
 						{
 							model: bd.Clasificaciones,
-							as: "clasificacion",
+							as: 'clasificacion',
 							where: {
 								activo: true,
 								estatus: true,
@@ -75,7 +85,7 @@ const resolvers = {
 				const { clasificacionID } = input;
 				const { isValid, fields, paths } = validator(input);
 				if (!isValid)
-					throw new UserInputError("Input Error", { fields, paths });
+					throw new UserInputError('Input Error', { fields, paths });
 				const existeClasificacion = await bd.Clasificaciones.count({
 					where: { id: clasificacionID },
 				});
@@ -101,7 +111,7 @@ const resolvers = {
 				const { clasificacionID } = input;
 				const { isValid, fields, paths } = validator(input);
 				if (!isValid)
-					throw new UserInputError("Input Error", { fields, paths });
+					throw new UserInputError('Input Error', { fields, paths });
 
 				const existeHerramienta = await bd.Herramientas.count({
 					where: { id, activo: true },
@@ -154,11 +164,10 @@ const resolvers = {
 					include: [
 						{
 							model: bd.Clasificaciones,
-							as: "clasificacion",
+							as: 'clasificacion',
 						},
 					],
 				});
-
 				return {
 					mensaje: mensajes.successDelete,
 					respuesta: response,

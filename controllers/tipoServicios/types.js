@@ -1,15 +1,15 @@
 module.exports = `
-  type ClasificacionResponse {
+  type TipoServicioResponse {
     count: Int
-    rows: [clasificacion]
+    rows: [TipoServicio]
   }
 
-  type responseClasificacion {
+  type responseTipoServicio {
     mensaje: String!
-    respuesta: clasificacion!
+    respuesta: TipoServicio!
   }
 
-  type clasificacion {
+  type TipoServicio {
     id: ID!
     descripcion: String!
     usuarioRegistroID: ID!
@@ -17,7 +17,7 @@ module.exports = `
     estatus: Boolean
   }
 
-  input clasificacionDatos {
+  input TipoServicioDatos {
     descripcion: String!
     usuarioRegistroID: ID,
     estatus: Boolean!

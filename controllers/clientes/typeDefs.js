@@ -1,6 +1,6 @@
 module.exports = `
   type Query{
-    getAllCliente(offset: Int, limit: Int): ClienteResponse!
+    getAllCliente(offset: Int, limit: Int, txtBusqueda: String): ClienteResponse!
     getCliente(id: ID!): cliente!
   }
   

@@ -22,8 +22,8 @@ module.exports = `
     numeroInterior: Int
     codigoPostal: Int
     usuarioRegistroID: ID!
-    activo: Boolean!
-    estatus: Boolean!
+    activo: Boolean
+    estatus: Boolean
   }
 
   input clienteDatos {
@@ -37,7 +37,7 @@ module.exports = `
     numeroExterior: Int
     numeroInterior: Int
     codigoPostal: Int
-    usuarioRegistroID: ID,
+    usuarioRegistroID: ID
     estatus: Boolean!
   }
 `;

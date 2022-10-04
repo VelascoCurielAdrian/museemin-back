@@ -1,6 +1,6 @@
 module.exports = `
   type Query{
-    getAllHerramientas(offset: Int, limit: Int): HerramientaResponse!
+    getAllHerramientas(offset: Int, limit: Int, txtBusqueda: String): HerramientaResponse!
     getHerramienta(id: ID!): herramienta!
   }
   

@@ -38,5 +38,6 @@ module.exports = `
     referencia: String
     numeroExterior: String
     usuarioRegistroID: ID
+    estatus: Boolean!
   }
 `;

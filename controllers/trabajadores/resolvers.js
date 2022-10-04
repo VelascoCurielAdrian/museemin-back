@@ -7,12 +7,35 @@ const mensajes = require('./mensajes');
 
 const resolvers = {
 	Query: {
-		getAllTrabajador: async (root, { limit = 25, offset, order = ['id'] }) => {
+		getAllTrabajador: async (
+			root,
+			{ limit, offset, order = ['id'], txtBusqueda },
+		) => {
 			try {
 				return await bd.Trabajadores.findAndCountAll({
 					where: {
-						activo: true,
-						estatus: true,
+						[bd.Sequelize.Op.and]: [
+							{ activo: true },
+							txtBusqueda && {
+								[bd.Sequelize.Op.or]: [
+									{
+										nombres: {
+											[bd.Sequelize.Op.iLike]: `%${txtBusqueda}%`,
+										},
+									},
+									{
+										primerApellido: {
+											[bd.Sequelize.Op.iLike]: `%${txtBusqueda}%`,
+										},
+									},
+									{
+										segundoApellido: {
+											[bd.Sequelize.Op.iLike]: `%${txtBusqueda}%`,
+										},
+									},
+								],
+							},
+						],
 					},
 					order: orderFormat(order),
 					...objectFilter({
@@ -38,7 +61,6 @@ const resolvers = {
 					where: {
 						id,
 						activo: true,
-						estatus: true,
 					},
 				});
 			} catch (error) {
@@ -77,7 +99,7 @@ const resolvers = {
 					where: { id },
 					returning: true,
 					plain: true,
-				});  
+				});
 				return {
 					mensaje: mensajes.successUpdate,
 					respuesta: response[1].dataValues,
