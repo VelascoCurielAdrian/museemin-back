@@ -32,10 +32,6 @@ module.exports = {
 					key: 'id',
 				},
 			},
-			createdAt: {
-				allowNull: true,
-				type: Sequelize.DATE,
-			},
 			usuarioModificacionID: {
 				type: Sequelize.INTEGER,
 				allowNull: true,
@@ -43,13 +39,6 @@ module.exports = {
 					model: 'Usuarios',
 					key: 'id',
 				},
-			},
-			updatedAt: {
-				allowNull: true,
-				type: Sequelize.DATE,
-			},
-			deletedAt: {
-				type: Sequelize.DATE,
 			},
 			herramientaID: {
 				allowNull: false,
@@ -72,6 +61,12 @@ module.exports = {
 					model: 'PaqueteHerramientas',
 					key: 'id',
 				},
+			},
+			createdAt: {
+				type: Sequelize.DATE,
+			},
+			updatedAt: {
+				type: Sequelize.DATE,
 			},
 		});
 	},

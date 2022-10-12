@@ -34,14 +34,12 @@ module.exports = {
         allowNull: false,
         defaultValue: true
       },
-      createdAt: {
-        allowNull: false,
+			createdAt: {
         type: Sequelize.DATE,
-      },
-      updatedAt: {
-        allowNull: false,
-        type: Sequelize.DATE,
-      },
+			},
+			updatedAt: {
+				type: Sequelize.DATE,
+			},
       perfilID: {
         allowNull: false,
         type: Sequelize.INTEGER,

@@ -1,34 +1,37 @@
 'use strict';
 module.exports = {
 	async up(queryInterface, Sequelize) {
-		await queryInterface.createTable('CapturaPrestamosPaqueteHerramientas', {
+		await queryInterface.createTable('Servicios', {
 			id: {
 				allowNull: false,
 				autoIncrement: true,
 				primaryKey: true,
 				type: Sequelize.INTEGER,
 			},
-			prestamoID: {
-				allowNull: false,
+			comentarios: {
+				allowNull: true,
+				type: Sequelize.STRING,
+			},
+			fecha: {
+				allowNull: true,
+				type: Sequelize.DATE,
+			},
+			hora: {
+				type: Sequelize.TIME,
+				allowNull: true,
+				defaultValue: new Date(),
+			},
+			clienteID: {
 				type: Sequelize.INTEGER,
-				validate: {
-					isInt: true,
-				},
+				allowNull: true,
 				references: {
-					model: 'Prestamos',
+					model: 'Clientes',
 					key: 'id',
 				},
 			},
-			paqueteHerramientaID: {
-				allowNull: false,
+			estatus: {
 				type: Sequelize.INTEGER,
-				validate: {
-					isInt: true,
-				},
-				references: {
-					model: 'PaqueteHerramientas',
-					key: 'id',
-				},
+				allowNull: false,
 			},
 			usuarioRegistroID: {
 				type: Sequelize.INTEGER,
@@ -55,6 +58,6 @@ module.exports = {
 		});
 	},
 	async down(queryInterface, Sequelize) {
-		await queryInterface.dropTable('CapturaPrestamosPaqueteHerramientas');
+		await queryInterface.dropTable('Servicios');
 	},
 };

@@ -30,10 +30,6 @@ module.exports = {
 					key: 'id',
 				},
 			},
-			createdAt: {
-				allowNull: true,
-				type: Sequelize.DATE,
-			},
 			usuarioModificacionID: {
 				type: Sequelize.INTEGER,
 				allowNull: true,
@@ -42,11 +38,10 @@ module.exports = {
 					key: 'id',
 				},
 			},
-			updatedAt: {
-				allowNull: true,
+			createdAt: {
 				type: Sequelize.DATE,
 			},
-			deletedAt: {
+			updatedAt: {
 				type: Sequelize.DATE,
 			},
 		});

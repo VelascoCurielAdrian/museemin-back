@@ -8,17 +8,32 @@
 		"logging": false
 	},
 	"test": {
-		"username": "root",
-		"password": null,
-		"database": "database_test",
-		"host": "127.0.0.1",
-		"dialect": "mysql"
+		"username": "museemin_hlok_user",
+		"password": "TgwM62U3dKmsIutFkwufpA85kQwmHYQb",
+		"database": "museemin_hlok",
+		"host": "oregon-postgres.render.com",
+		"dialect": "postgres",
+		"port": "5432",
+		"logging": false,
+		"dialectOptions": {
+			"ssl": {
+				"require": true,
+				"rejectUnauthorized": false
+			}
+		}
 	},
 	"production": {
-		"username": "root",
-		"password": null,
-		"database": "database_production",
+		"username": "postgres",
+		"password": "Geecko@_@321",
+		"database": "museemin-dev",
 		"host": "127.0.0.1",
-		"dialect": "mysql"
+		"dialect": "postgres",
+		"logging": false,
+		"dialectOptions": {
+			"ssl": {
+				"require": true,
+				"rejectUnauthorized": false
+			}
+		}
 	}
 }

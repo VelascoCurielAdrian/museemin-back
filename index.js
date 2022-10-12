@@ -1,7 +1,6 @@
 const { ApolloServer } = require('apollo-server');
 const schema = require('./controllers');
 const jwt = require('jsonwebtoken');
-const dotenv = require('dotenv');
 
 const server = new ApolloServer({
 	schema,
@@ -18,7 +17,7 @@ const server = new ApolloServer({
 					UserData,
 				};
 			} catch (e) {
-				console.log(e);
+				return e;
 			}
 		}
 	},

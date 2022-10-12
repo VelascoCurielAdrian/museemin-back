@@ -101,6 +101,20 @@ module.exports = (sequelize, DataTypes) => {
 			this.hasMany(models.TipoServicios, {
 				foreignKey: 'usuarioModificacionID',
 			});
+			//Servicios
+			this.hasMany(models.Servicios, {
+				foreignKey: 'usuarioRegistroID',
+			});
+			this.hasMany(models.Servicios, {
+				foreignKey: 'usuarioModificacionID',
+			});
+			//Detalleervicios
+			this.hasMany(models.DetalleServicios, {
+				foreignKey: 'usuarioRegistroID',
+			});
+			this.hasMany(models.DetalleServicios, {
+				foreignKey: 'usuarioModificacionID',
+			});
 		}
 	}
 	Usuarios.init(

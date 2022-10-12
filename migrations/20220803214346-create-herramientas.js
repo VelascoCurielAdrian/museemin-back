@@ -1,7 +1,7 @@
-"use strict";
+'use strict';
 module.exports = {
 	async up(queryInterface, Sequelize) {
-		await queryInterface.createTable("Herramientas", {
+		await queryInterface.createTable('Herramientas', {
 			id: {
 				allowNull: false,
 				autoIncrement: true,
@@ -42,28 +42,17 @@ module.exports = {
 				type: Sequelize.INTEGER,
 				allowNull: false,
 				references: {
-					model: "Usuarios",
-					key: "id",
+					model: 'Usuarios',
+					key: 'id',
 				},
-			},
-			createdAt: {
-				allowNull: true,
-				type: Sequelize.DATE,
 			},
 			usuarioModificacionID: {
 				type: Sequelize.INTEGER,
 				allowNull: true,
 				references: {
-					model: "Usuarios",
-					key: "id",
+					model: 'Usuarios',
+					key: 'id',
 				},
-			},
-			updatedAt: {
-				allowNull: true,
-				type: Sequelize.DATE,
-			},
-			deletedAt: {
-				type: Sequelize.DATE,
 			},
 			clasificacionID: {
 				allowNull: false,
@@ -72,13 +61,19 @@ module.exports = {
 					isInt: true,
 				},
 				references: {
-					model: "Clasificaciones",
-					key: "id",
+					model: 'Clasificaciones',
+					key: 'id',
 				},
+			},
+			createdAt: {
+				type: Sequelize.DATE,
+			},
+			updatedAt: {
+				type: Sequelize.DATE,
 			},
 		});
 	},
 	async down(queryInterface, Sequelize) {
-		await queryInterface.dropTable("Herramientas");
+		await queryInterface.dropTable('Herramientas');
 	},
 };

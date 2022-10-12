@@ -28,8 +28,16 @@ sequelize model:generate --name Prestamos --attributes descripcion:string
 sequelize model:generate --name CapturaPrestamosHerramientas --attributes herramientaID:integer
 --MODELO De CAPTURA DE PAQUETE DE HERRAMIENTAS PRESTADAS --
 sequelize model:generate --name CapturaPrestamosPaqueteHerramientas --attributes paqueteHerramientaID:integer
---MODELO De SERVICIOS --
+
+--MODELO De TIPO SERVICIO --
 sequelize model:generate --name TiposServicios --attributes descripcion:string
+--MODELO De SERVICIOS --
+sequelize model:generate --name Servicios --attributes comentarios:string
+--MODELO De Detalle SERVICIOS --
+sequelize model:generate --name DetalleServicios
+--MODELO De Detalle SERVICIOS TRABAJADORES --
+sequelize model:generate --name DetalleServicioTrabajadores
+
 
 descripcion
 Trabajadores

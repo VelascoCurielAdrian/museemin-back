@@ -93,7 +93,10 @@ const resolvers = {
 				const dataClasificacion = await bd.Clasificaciones.findOne({
 					where: { id: clasificacionID },
 				});
-				const response = await bd.Herramientas.create({ ...input });
+				const response = await bd.Herramientas.create({
+					...input,
+					usuarioRegistroID: 1,
+				});
 
 				return {
 					mensaje: mensajes.successCreate,
@@ -127,11 +130,14 @@ const resolvers = {
 					where: { id: clasificacionID },
 				});
 
-				const response = await bd.Herramientas.update(input, {
-					where: { id },
-					returning: true,
-					plain: true,
-				});
+				const response = await bd.Herramientas.update(
+					{ ...input, usuarioRegistroID: 1 },
+					{
+						where: { id },
+						returning: true,
+						plain: true,
+					},
+				);
 
 				return {
 					mensaje: mensajes.successUpdate,

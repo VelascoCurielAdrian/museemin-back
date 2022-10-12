@@ -76,7 +76,10 @@ const resolvers = {
 					throw new UserInputError('Input Error', { fields, paths });
 				if (input.telefono && input.telefono.length !== 10)
 					throw MENSAJES.telefono;
-				const response = await bd.Trabajadores.create({ ...input });
+				const response = await bd.Trabajadores.create({
+					...input,
+					usuarioRegistroID: 1,
+				});
 				return {
 					mensaje: mensajes.successCreate,
 					respuesta: response.dataValues,

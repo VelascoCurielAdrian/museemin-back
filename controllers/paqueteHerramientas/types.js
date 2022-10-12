@@ -20,7 +20,7 @@ module.exports = `
 
   type CapturaPaqueteHerramientas {
     id: ID!
-    descripcion: String!
+    descripcion: String
     herramientaID: ID!
     herramienta: herramienta!
     usuarioRegistroID: ID
@@ -36,7 +36,7 @@ module.exports = `
   }
   
   input datosCapturaPaqueteHerramientas {
-    descripcion: String!
+    descripcion: String
     usuarioRegistroID: ID
     herramientaID: ID!
     estatus: Boolean

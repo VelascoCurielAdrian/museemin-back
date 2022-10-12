@@ -14,6 +14,10 @@ module.exports = (sequelize, DataTypes) => {
 			this.hasMany(models.Prestamos, {
 				foreignKey: 'trabajadorID',
 			});
+			// DetalleServicioTrabajadores
+			this.hasMany(models.DetalleServicioTrabajadores, {
+				foreignKey: 'trabajadorID',
+			});
 		}
 	}
 	Trabajadores.init(
@@ -34,7 +38,6 @@ module.exports = (sequelize, DataTypes) => {
 		{
 			sequelize,
 			modelName: 'Trabajadores',
-			paranoid: true,
 		},
 	);
 	return Trabajadores;

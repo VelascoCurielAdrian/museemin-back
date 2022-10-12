@@ -1,7 +1,6 @@
 const validator = require('./validator');
 const MENSAJES = require('./mensajes');
 const bd = require('../../models');
-const { UserInputError } = require('apollo-server');
 const { objectFilter, orderFormat } = require('../../helpers/general');
 const mensajes = require('./mensajes');
 const { sequelize: SequelizeModel } = require('../../models');
@@ -116,7 +115,6 @@ const resolvers = {
 							const existeHerramienta = await bd.Herramientas.count({
 								where: {
 									id: captura.herramientaID,
-									estatus: true,
 									activo: true,
 								},
 							});
@@ -131,6 +129,7 @@ const resolvers = {
 								{
 									paqueteHerramientaID: id,
 									...captura,
+									usuarioRegistroID: 1,
 								},
 								{ transaction: t },
 							);
@@ -181,10 +180,10 @@ const resolvers = {
 							const existeHerramienta = await bd.Herramientas.count({
 								where: {
 									id: captura.herramientaID,
-									estatus: true,
 									activo: true,
 								},
 							});
+
 							if (!existeHerramienta) throw mensajes.existeHerramienta;
 							const herramienta = await bd.Herramientas.findOne({
 								where: { id: captura.herramientaID },
@@ -196,6 +195,7 @@ const resolvers = {
 								{
 									paqueteHerramientaID: idPaquete,
 									...captura,
+									usuarioRegistroID: 1,
 								},
 								{ transaction: t },
 							);
