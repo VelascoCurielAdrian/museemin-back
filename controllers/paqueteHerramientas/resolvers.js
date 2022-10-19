@@ -97,6 +97,7 @@ const resolvers = {
 					let paquetes = [];
 					const {
 						descripcion,
+						imagen,
 						usuarioRegistroID,
 						estatus,
 						CapturaPaqueteHerramientas: datosCapturaPaqueteHerramientas,
@@ -104,6 +105,7 @@ const resolvers = {
 
 					const { dataValues } = await bd.PaqueteHerramientas.create({
 						descripcion,
+						imagen,
 						usuarioRegistroID,
 						estatus,
 					});
@@ -166,6 +168,7 @@ const resolvers = {
 						descripcion,
 						usuarioRegistroID,
 						estatus,
+						imagen,
 						CapturaPaqueteHerramientas: datosCapturaPaqueteHerramientas,
 					} = input;
 

@@ -21,6 +21,9 @@ module.exports = {
 				allowNull: false,
 				defaultValue: true,
 			},
+			imagen: {
+				type: Sequelize.STRING,
+			},
 			usuarioRegistroID: {
 				type: Sequelize.INTEGER,
 				allowNull: false,

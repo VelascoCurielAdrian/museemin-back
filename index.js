@@ -1,12 +1,14 @@
-const { ApolloServer } = require('apollo-server');
+const express = require('express');
+const { ApolloServer } = require('apollo-server-express');
 const schema = require('./controllers');
 const jwt = require('jsonwebtoken');
+const { graphqlUploadExpress } = require('graphql-upload-minimal');
 
-const server = new ApolloServer({
-	schema,
-	context: async ({ req }) => {
-		const token = req.headers.authorization || '';
-		if (token) {
+async function startServer() {
+	const server = new ApolloServer({
+		schema,
+		context: async ({ req }) => {
+			const token = req.headers.authorization || '';
 			try {
 				const UserData = await jwt.verify(
 					token.replace('Bearer ', ''),
@@ -19,16 +21,16 @@ const server = new ApolloServer({
 			} catch (e) {
 				return e;
 			}
-		}
-	},
-});
+		},
+		csrfPrevention: true,
+		cache: 'bounded',
+	});
 
-server.listen(normalizePort('4000'));
-function normalizePort(val) {
-	const PORT = 4000;
-	console.log(`Server is now running on http://localhost:${PORT}/graphql`);
-	var port = parseInt(val, 10);
-	if (isNaN(port)) return val;
-	if (port >= 0) return port;
-	return false;
+	await server.start();
+	const app = express();
+	app.use(graphqlUploadExpress({ maxFileSize: 10000000, maxFiles: 10 }));
+	server.applyMiddleware({ app });
+	await new Promise((r) => app.listen({ port: 4000 }, r));
+	console.log(`🚀 Server ready at http://localhost:4000${server.graphqlPath}`);
 }
+startServer();

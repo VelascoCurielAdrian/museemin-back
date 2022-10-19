@@ -1,7 +1,7 @@
 const bd = require('../../models');
 const validator = require('./validator');
 const MESSAGES = require('./error.message');
-const { UserInputError } = require('apollo-server');
+const { UserInputError } = require('apollo-server-express');
 const dotenv = require('dotenv');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');

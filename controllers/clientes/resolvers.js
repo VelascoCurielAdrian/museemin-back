@@ -1,7 +1,7 @@
 const validator = require('./validator');
 const MENSAJES = require('./mensajes');
 const bd = require('../../models');
-const { UserInputError } = require('apollo-server');
+const { UserInputError } = require('apollo-server-express');
 const { objectFilter, orderFormat } = require('../../helpers/general');
 const mensajes = require('./mensajes');
 

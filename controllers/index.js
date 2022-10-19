@@ -1,6 +1,5 @@
-const { gql } = require('apollo-server');
-const { mergeSchemas } = require('@graphql-tools/schema');
-const { makeExecutableSchema } = require('@graphql-tools/schema');
+const { gql } = require('apollo-server-express');
+const { mergeSchemas, makeExecutableSchema } = require('@graphql-tools/schema');
 const fs = require('fs');
 const path = require('path');
 const basename = path.basename(__filename);

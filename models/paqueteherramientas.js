@@ -19,6 +19,7 @@ module.exports = (sequelize, DataTypes) => {
 	PaqueteHerramientas.init(
 		{
 			descripcion: DataTypes.STRING,
+			imagen: DataTypes.STRING,
 			activo: DataTypes.BOOLEAN,
 			estatus: DataTypes.BOOLEAN,
 		},

@@ -12,6 +12,7 @@ module.exports = `
   type paqueteHerramienta {
     id: ID!
     descripcion: String
+    imagen: String
     usuarioRegistroID: ID
     CapturaPaqueteHerramientas: [CapturaPaqueteHerramientas]!
     activo: Boolean
@@ -30,6 +31,7 @@ module.exports = `
 
   input datosPaqueteHerramienta {
     descripcion: String!
+    imagen: String
     CapturaPaqueteHerramientas: [datosCapturaPaqueteHerramientas]!
     usuarioRegistroID: ID
     estatus: Boolean
