@@ -14,8 +14,10 @@ module.exports = (sequelize, DataTypes) => {
 		{
 			gastoID: DataTypes.INTEGER,
 			descripcion: DataTypes.STRING,
+			unidad: DataTypes.INTEGER,
 			precio: DataTypes.DECIMAL(10, 2),
 			cantidad: DataTypes.INTEGER,
+			importe: DataTypes.DECIMAL(10, 2),
 			activo: DataTypes.BOOLEAN,
 		},
 		{

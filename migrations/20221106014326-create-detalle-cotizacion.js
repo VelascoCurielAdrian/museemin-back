@@ -8,9 +8,33 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      estatus: {
+      activo: {
         type: Sequelize.BOOLEAN
       },
+      descripcion: {
+				allowNull: false,
+				type: Sequelize.STRING,
+			},
+			partida: {
+				allowNull: false,
+				type: Sequelize.INTEGER,
+			},
+			unidad: {
+				allowNull: false,
+				type: Sequelize.INTEGER,
+			},
+			precio: {
+				allowNull: false,
+				type: Sequelize.DECIMAL(10, 2),
+			},
+			cantidad: {
+				allowNull: false,
+				type: Sequelize.INTEGER,
+			},
+			importe: {
+				allowNull: false,
+				type: Sequelize.DECIMAL(10, 2),
+			},
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

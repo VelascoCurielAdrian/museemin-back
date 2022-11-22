@@ -69,6 +69,7 @@ const resolvers = {
 				);
 				if (!suuccesPassword) throw MESSAGES.password;
 				return {
+					mensaje: `Bienvenido ${usernameAvailability.dataValues.nombre}`,
 					token: createToken(usernameAvailability, process.env.SECRET, '30day'),
 				};
 			} catch (error) {

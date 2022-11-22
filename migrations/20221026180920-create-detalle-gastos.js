@@ -20,6 +20,10 @@ module.exports = {
 				allowNull: false,
 				type: Sequelize.STRING,
 			},
+			unidad: {
+				allowNull: false,
+				type: Sequelize.INTEGER,
+			},
 			precio: {
 				allowNull: false,
 				type: Sequelize.DECIMAL(10, 2),
@@ -27,6 +31,10 @@ module.exports = {
 			cantidad: {
 				allowNull: false,
 				type: Sequelize.INTEGER,
+			},
+			importe: {
+				allowNull: false,
+				type: Sequelize.DECIMAL(10, 2),
 			},
 			activo: {
 				type: Sequelize.BOOLEAN,

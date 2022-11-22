@@ -8,7 +8,7 @@ const resolvers = {
 	Query: {
 		getAllCountClasificacion: async (
 			root,
-			{ limit = 25, offset, order = ['id'] },
+			{ limit, offset, order = ['id'] },
 		) => {
 			try {
 				return await bd.Clasificaciones.findAndCountAll({
@@ -71,7 +71,11 @@ const resolvers = {
 					where: { descripcion: input.descripcion },
 				});
 				if (Existe > 0) throw MENSAJES.existe;
-				const response = await bd.Clasificaciones.create({ ...input });
+				const response = await bd.Clasificaciones.create({
+					...input,
+					estatus: true,
+					usuarioRegistroID: 1,
+				});
 				return {
 					mensaje: MENSAJES.successCreate,
 					respuesta: response.dataValues,

@@ -56,7 +56,8 @@ sequelize model:generate --name DetalleGastos --attributes estatus:boolean
 
 
 //Nota 
-npx sequelize-cli db:migrate:undo --name 20221026180920-create-detalle-gastos.js 
+npx sequelize-cli db:migrate:undo --name 20221026180035-create-gastos.js
+npx sequelize-cli db:migrate:undo --name 20221026180920-create-detalle-gastos.js
 
 CREACION DE MODELO DE COTIZACION
 sequelize model:generate --name Cotizacion --attributes concepto:string

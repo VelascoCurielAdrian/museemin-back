@@ -10,44 +10,48 @@ module.exports = `
   }
 
   type gastos {
-    id: ID!
-    trabajadorID: ID!
-    clienteID: ID!
+    id: ID
+    trabajadorID: ID
+    clienteID: ID
     descripcion: String
     compania: String
     fecha: Date
     metodoPago: Int
+    tipoGasto: Int
     importe: Float
     diferencia: Float
-    subtotal: Float
+    subTotal: Float
     total: Float
     usuarioRegistroID: ID
-    trabajador: trabajador!
-    cliente: cliente!
-    DetalleGastos: [detalleGastos]!
+    trabajador: trabajador
+    cliente: cliente
+    DetalleGastos: [detalleGastos]
     activo: Boolean
     estatus: Boolean
   }
 
   type detalleGastos {
-    id: ID!
+    id: ID
     gastoID: ID
     descripcion: String
-    precio: Float!
-    cantidad: Int!
+    unidad: Int
+    precio: Float
+    cantidad: Int
+    importe: Float
     activo: Boolean
   }
 
   input datosGastos {
-    trabajadorID: ID!
-    clienteID: ID!
+    trabajadorID: ID
+    clienteID: ID
     descripcion: String
     compania: String
     fecha: Date
     metodoPago: Int
+    tipoGasto: Int
     importe: Float
     diferencia: Float
-    subtotal: Float
+    subTotal: Float
     total: Float
     usuarioRegistroID: ID
     CapturaDetalleGastos: [datosCapturaDetalleGastos]
@@ -56,9 +60,11 @@ module.exports = `
   input datosCapturaDetalleGastos {
     id: ID
     gastoID: ID
-    descripcion: String!
-    precio: Float!
-    cantidad: Int!
+    descripcion: String
+    unidad: Int
+    precio: Float
+    cantidad: Int
+    importe: Float
     activo: Boolean
   }
 `;

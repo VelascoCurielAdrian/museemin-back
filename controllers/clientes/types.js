@@ -37,7 +37,6 @@ module.exports = `
     numeroExterior: Int
     numeroInterior: Int
     codigoPostal: Int
-    usuarioRegistroID: ID
     estatus: Boolean!
   }
 `;

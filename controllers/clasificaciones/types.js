@@ -19,7 +19,5 @@ module.exports = `
 
   input clasificacionDatos {
     descripcion: String!
-    usuarioRegistroID: ID,
-    estatus: Boolean!
   }
 `;

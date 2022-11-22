@@ -70,7 +70,10 @@ const resolvers = {
 					where: { nombre: input.nombre, activo: true, estatus: true },
 				});
 				if (Existe > 0) throw mensajes.existe;
-				const response = await bd.Clientes.create({ ...input });
+				const response = await bd.Clientes.create({
+					...input,
+					usuarioRegistroID: 1,
+				});
 				return {
 					mensaje: mensajes.successCreate,
 					respuesta: response.dataValues,
@@ -87,11 +90,14 @@ const resolvers = {
 				if (isNaN(parseInt(id))) throw MENSAJES.id;
 				const existe = await bd.Clientes.count({ where: { id } });
 				if (!existe) throw MENSAJES.noExiste;
-				const response = await bd.Clientes.update(input, {
-					where: { id },
-					returning: true,
-					plain: true,
-				});
+				const response = await bd.Clientes.update(
+					{ ...input, usuarioRegistroID: 1 },
+					{
+						where: { id },
+						returning: true,
+						plain: true,
+					},
+				);
 				return {
 					mensaje: mensajes.successUpdate,
 					respuesta: response[1].dataValues,

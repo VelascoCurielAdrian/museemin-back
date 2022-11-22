@@ -9,38 +9,33 @@ module.exports = {
 				type: Sequelize.INTEGER,
 			},
 			descripcion: {
-				allowNull: false,
 				type: Sequelize.STRING,
 			},
 			metodoPago: {
-				allowNull: false,
 				type: Sequelize.INTEGER,
 			},
 			importe: {
-				allowNull: false,
 				type: Sequelize.DECIMAL(10, 2),
 			},
 			diferencia: {
-				allowNull: false,
 				type: Sequelize.DECIMAL(10, 2),
 			},
-			subtotal: {
-				allowNull: false,
+			subTotal: {
 				type: Sequelize.DECIMAL(10, 2),
 			},
 			total: {
-				allowNull: false,
 				type: Sequelize.DECIMAL(10, 2),
 			},
 			compania: {
-				allowNull: false,
 				type: Sequelize.STRING,
 			},
 			fecha: {
 				type: Sequelize.DATE,
 			},
+			tipoGasto: {
+				type: Sequelize.INTEGER,
+			},
 			clienteID: {
-				allowNull: false,
 				type: Sequelize.INTEGER,
 				validate: {
 					isInt: true,

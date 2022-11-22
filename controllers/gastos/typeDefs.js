@@ -5,8 +5,8 @@ module.exports = `
   }
   
   type Mutation {
-    createGastos(input: datosGastos!): responseGastos!
-    updateGastos(id: ID!, input: datosGastos!): responseGastos!
-    deleteGastos(id: ID): responseGastos!
+    createGastos(input: datosGastos): responseGastos
+    updateGastos(id: ID, input: datosGastos): responseGastos
+    deleteGastos(id: ID): responseGastos
   }
 `;

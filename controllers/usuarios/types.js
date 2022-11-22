@@ -34,6 +34,7 @@ module.exports = `
   }
 
   type Token {
+    mensaje: String!
     token: String!
   }
 
