@@ -1,7 +1,7 @@
 'use strict';
 module.exports = {
 	async up(queryInterface, Sequelize) {
-		await queryInterface.createTable('Cotizacions', {
+		await queryInterface.createTable('Gastos', {
 			id: {
 				allowNull: false,
 				autoIncrement: true,
@@ -11,6 +11,30 @@ module.exports = {
 			descripcion: {
 				type: Sequelize.STRING,
 			},
+			metodoPago: {
+				type: Sequelize.INTEGER,
+			},
+			importe: {
+				type: Sequelize.DECIMAL(10, 2),
+			},
+			diferencia: {
+				type: Sequelize.DECIMAL(10, 2),
+			},
+			subTotal: {
+				type: Sequelize.DECIMAL(10, 2),
+			},
+			total: {
+				type: Sequelize.DECIMAL(10, 2),
+			},
+			compania: {
+				type: Sequelize.STRING,
+			},
+			fecha: {
+				type: Sequelize.DATE,
+			},
+			tipoGasto: {
+				type: Sequelize.INTEGER,
+			},
 			clienteID: {
 				type: Sequelize.INTEGER,
 				validate: {
@@ -18,6 +42,25 @@ module.exports = {
 				},
 				references: {
 					model: 'Clientes',
+					key: 'id',
+				},
+			},
+			cotizacionID: {
+				type: Sequelize.INTEGER,
+				allowNull: true,
+				references: {
+					model: 'Cotizaciones',
+					key: 'id',
+				},
+			},
+			trabajadorID: {
+				allowNull: false,
+				type: Sequelize.INTEGER,
+				validate: {
+					isInt: true,
+				},
+				references: {
+					model: 'Trabajadores',
 					key: 'id',
 				},
 			},
@@ -56,6 +99,6 @@ module.exports = {
 		});
 	},
 	async down(queryInterface, Sequelize) {
-		await queryInterface.dropTable('Cotizacions');
+		await queryInterface.dropTable('Gastos');
 	},
 };

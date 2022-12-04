@@ -13,6 +13,7 @@ module.exports = `
     id: ID
     trabajadorID: ID
     clienteID: ID
+    cotizacionID: ID
     descripcion: String
     compania: String
     fecha: Date
@@ -25,6 +26,7 @@ module.exports = `
     usuarioRegistroID: ID
     trabajador: trabajador
     cliente: cliente
+    cotizacion: cotizacion
     DetalleGastos: [detalleGastos]
     activo: Boolean
     estatus: Boolean
@@ -44,6 +46,7 @@ module.exports = `
   input datosGastos {
     trabajadorID: ID
     clienteID: ID
+    cotizacionID: ID
     descripcion: String
     compania: String
     fecha: Date

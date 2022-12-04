@@ -1,7 +1,7 @@
 'use strict';
 const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-	class Gastos extends Model {
+	class Cotizaciones extends Model {
 		static associate(models) {
 			//Usuarios
 			this.belongsTo(models.Usuarios, {
@@ -10,48 +10,35 @@ module.exports = (sequelize, DataTypes) => {
 			this.belongsTo(models.Usuarios, {
 				foreignKey: 'usuarioModificacionID',
 			});
-			//Trabajador
-			this.belongsTo(models.Trabajadores, {
-				as: 'trabajador',
-				foreignKey: 'trabajadorID',
-			});
 			//Cliente
 			this.belongsTo(models.Clientes, {
 				as: 'cliente',
 				foreignKey: 'clienteID',
 			});
-			// DetalleGastos
-			this.hasMany(models.DetalleGastos, {
-				foreignKey: 'gastoID',
+			// CotizacionDetalles
+			this.hasMany(models.CotizacionDetalles, {
+				foreignKey: 'cotizacionID',
 			});
-			//Cotzaciones
-			this.belongsTo(models.Cotizaciones, {
-				as: 'Cotizaciones',
+			// Gastos
+			this.hasMany(models.Gastos, {
 				foreignKey: 'cotizacionID',
 			});
 		}
 	}
-	Gastos.init(
+	Cotizaciones.init(
 		{
 			descripcion: DataTypes.STRING,
-			compania: DataTypes.STRING,
 			fecha: DataTypes.DATE,
-			metodoPago: DataTypes.INTEGER,
-			tipoGasto: DataTypes.INTEGER,
 			clienteID: DataTypes.INTEGER,
-			cotizacionID: DataTypes.INTEGER,
-			trabajadorID: DataTypes.INTEGER,
-			importe: DataTypes.DECIMAL(10, 2),
-			diferencia: DataTypes.DECIMAL(10, 2),
+			proceso: DataTypes.INTEGER,
 			subTotal: DataTypes.DECIMAL(10, 2),
-			total: DataTypes.DECIMAL(10, 2),
 			activo: DataTypes.BOOLEAN,
 			estatus: DataTypes.BOOLEAN,
 		},
 		{
 			sequelize,
-			modelName: 'Gastos',
+			modelName: 'Cotizaciones',
 		},
 	);
-	return Gastos;
+	return Cotizaciones;
 };

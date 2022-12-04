@@ -6,22 +6,17 @@ const { sequelize: SequelizeModel } = require('../../models');
 
 const resolvers = {
 	Query: {
-		getAllGastos: async (
+		getAllCotizaciones: async (
 			root,
 			{ limit = 25, offset, order = ['id'], txtBusqueda },
 		) => {
 			try {
-				return await bd.Gastos.findAndCountAll({
+				return await bd.Cotizaciones.findAndCountAll({
 					where: {
 						[bd.Sequelize.Op.and]: [
 							{ activo: true },
 							txtBusqueda && {
 								[bd.Sequelize.Op.or]: [
-									{
-										'$trabajador.nombres$': {
-											[bd.Sequelize.Op.iLike]: `%${txtBusqueda}%`,
-										},
-									},
 									{
 										'$cliente.nombre$': {
 											[bd.Sequelize.Op.iLike]: `%${txtBusqueda}%`,
@@ -33,18 +28,10 @@ const resolvers = {
 					},
 					include: [
 						{
-							model: bd.DetalleGastos,
-							as: 'DetalleGastos',
+							model: bd.CotizacionDetalles,
+							as: 'CotizacionDetalles',
 							where: {
 								activo: true,
-							},
-						},
-						{
-							model: bd.Trabajadores,
-							as: 'trabajador',
-							where: {
-								activo: true,
-								estatus: true,
 							},
 						},
 						{
@@ -72,19 +59,19 @@ const resolvers = {
 				return error;
 			}
 		},
-		getGastos: async (_, { id }, {}) => {
+		getCotizaciones: async (_, { id }, {}) => {
 			try {
 				if (isNaN(parseInt(id))) throw MENSAJES.id;
-				const exist = await bd.Gastos.count({ where: { id } });
-				if (!exist) throw MENSAJES.existeGasto;
-				const response = await bd.Gastos.findOne({
+				const exist = await bd.Cotizaciones.count({ where: { id } });
+				if (!exist) throw MENSAJES.existeCotizacion;
+				const response = await bd.Cotizaciones.findOne({
 					where: {
 						id,
 					},
 					include: [
 						{
-							model: bd.DetalleGastos,
-							as: 'DetalleGastos',
+							model: bd.CotizacionDetalles,
+							as: 'CotizacionDetalles',
 							where: {
 								activo: true,
 							},
@@ -96,25 +83,40 @@ const resolvers = {
 				return error;
 			}
 		},
+		getCotizacionCliente: async (_, { clienteID }, {}) => {
+			try {
+				const response = await bd.Cotizaciones.findAll({
+					where: {
+						clienteID,
+						proceso: 3
+					},
+				});
+				return response;
+			} catch (error) {
+				return error;
+			}
+		},
 	},
 	Mutation: {
-		createGastos: async (_, { input }, {}) => {
+		createCotizaciones: async (_, { input }, {}) => {
 			try {
 				return await SequelizeModel.transaction(async (t) => {
-					let DetalleGastos = [];
-					const { CapturaDetalleGastos: datosCapturaDetalleGastos } = input;
+					let cotizacionDetalle = [];
+					const {
+						CapturaCotizacionesDetalles: datosCapturaDetalleCotizaciones,
+					} = input;
 
-					const gastoCreated = await bd.Gastos.create({
+					const cotizacionCreated = await bd.Cotizaciones.create({
 						...input,
 						usuarioRegistroID: 1,
 					});
 
 					await Promise.all(
-						datosCapturaDetalleGastos.map(async (captura) => {
-							const { id } = gastoCreated.dataValues;
-							const dataCaptura = await bd.DetalleGastos.create(
+						datosCapturaDetalleCotizaciones.map(async (captura) => {
+							const { id } = cotizacionCreated.dataValues;
+							const dataCaptura = await bd.CotizacionDetalles.create(
 								{
-									gastoID: id,
+									cotizacionID: id,
 									descripcion: captura.descripcion,
 									unidad: captura.unidad,
 									precio: captura.precio,
@@ -124,23 +126,15 @@ const resolvers = {
 								},
 								{ transaction: t },
 							);
-							DetalleGastos.push(dataCaptura?.dataValues);
+							cotizacionDetalle.push(dataCaptura?.dataValues);
 						}),
 					);
 
-					const { dataValues } = await bd.Gastos.findOne({
+					const { dataValues } = await bd.Cotizaciones.findOne({
 						where: {
-							id: gastoCreated.dataValues.id,
+							id: cotizacionCreated.dataValues.id,
 						},
 						include: [
-							{
-								model: bd.Trabajadores,
-								as: 'trabajador',
-								where: {
-									activo: true,
-									estatus: true,
-								},
-							},
 							{
 								required: false,
 								model: bd.Clientes,
@@ -150,11 +144,6 @@ const resolvers = {
 									estatus: true,
 								},
 							},
-							{
-								required: false,
-								model: bd.Cotizaciones,
-								as: 'Cotizaciones',
-							}
 						],
 					});
 
@@ -162,7 +151,7 @@ const resolvers = {
 						mensaje: mensajes.successCreate,
 						respuesta: {
 							...dataValues,
-							DetalleGastos,
+							CotizacionDetalles: cotizacionDetalle,
 						},
 					};
 				});
@@ -171,37 +160,39 @@ const resolvers = {
 				return error;
 			}
 		},
-		updateGastos: async (_, { id, input }, {}) => {
+		updateCotizaciones: async (_, { id, input }, {}) => {
 			try {
 				return await SequelizeModel.transaction(async (t) => {
-					let detalleGastos = [];
-					const { CapturaDetalleGastos: datosCapturaDetalleGastos } = input;
+					let cotizacionDetalle = [];
+					const {
+						CapturaCotizacionesDetalles: datosCapturaDetalleCotizaciones,
+					} = input;
 
-					await bd.Gastos.update(
+					await bd.Cotizaciones.update(
 						{ ...input, usuarioRegistroID: 1 },
 						{ where: { id }, returning: true, plain: true },
 					);
 
 					await Promise.all(
-						datosCapturaDetalleGastos.map(async (captura) => {
-							const { id: detalleGastoID, gastoID } = captura;
-							if (gastoID) {
-								const dataCaptura = await bd.DetalleGastos.update(
+						datosCapturaDetalleCotizaciones.map(async (captura) => {
+							const { id: detalleCotizacionID, cotizacionID } = captura;
+							if (cotizacionID) {
+								const dataCaptura = await bd.CotizacionDetalles.update(
 									{
 										...captura,
 									},
 									{
-										where: { id: detalleGastoID },
+										where: { id: detalleCotizacionID },
 										returning: true,
 										plain: true,
 									},
 									{ transaction: t },
 								);
-								detalleGastos.push(dataCaptura[1].dataValues);
+								cotizacionDetalle.push(dataCaptura[1].dataValues);
 							} else {
-								const dataCaptura = await bd.DetalleGastos.create(
+								const dataCaptura = await bd.CotizacionDetalles.create(
 									{
-										gastoID: id,
+										cotizacionID: id,
 										descripcion: captura.descripcion,
 										unidad: captura.unidad,
 										precio: captura.precio,
@@ -211,24 +202,16 @@ const resolvers = {
 									},
 									{ transaction: t },
 								);
-								detalleGastos.push(dataCaptura.dataValues);
+								cotizacionDetalle.push(dataCaptura.dataValues);
 							}
 						}),
 					);
 
-					const { dataValues } = await bd.Gastos.findOne({
+					const { dataValues } = await bd.Cotizaciones.findOne({
 						where: {
 							id,
 						},
 						include: [
-							{
-								model: bd.Trabajadores,
-								as: 'trabajador',
-								where: {
-									activo: true,
-									estatus: true,
-								},
-							},
 							{
 								required: false,
 								model: bd.Clientes,
@@ -238,11 +221,6 @@ const resolvers = {
 									estatus: true,
 								},
 							},
-							{
-								required: false,
-								model: bd.Cotizaciones,
-								as: 'Cotizaciones',
-							},
 						],
 					});
 
@@ -250,7 +228,7 @@ const resolvers = {
 						mensaje: mensajes.successUpdate,
 						respuesta: {
 							...dataValues,
-							DetalleGastos: detalleGastos,
+							CotizacionDetalles: cotizacionDetalle,
 						},
 					};
 				});
@@ -259,14 +237,14 @@ const resolvers = {
 				return error;
 			}
 		},
-		deleteGastos: async (_, { id }, {}) => {
+		deleteCotizaciones: async (_, { id }, {}) => {
 			try {
-				const existeGasto = await bd.Gastos.count({
+				const existeGasto = await bd.Cotizaciones.count({
 					where: { id, estatus: true, activo: true },
 				});
 				if (!existeGasto) throw mensajes.existeGasto;
 
-				await bd.Gastos.update(
+				await bd.Cotizaciones.update(
 					{ activo: false },
 					{
 						where: { id },
@@ -275,22 +253,14 @@ const resolvers = {
 					},
 				);
 
-				const response = await bd.Gastos.findOne({
+				const response = await bd.Cotizaciones.findOne({
 					where: {
 						id,
 					},
 					include: [
 						{
-							model: bd.DetalleGastos,
-							as: 'DetalleGastos',
-						},
-						{
-							model: bd.Trabajadores,
-							as: 'trabajador',
-							where: {
-								activo: true,
-								estatus: true,
-							},
+							model: bd.CotizacionDetalles,
+							as: 'CotizacionDetalles',
 						},
 						{
 							model: bd.Clientes,
@@ -299,10 +269,6 @@ const resolvers = {
 								activo: true,
 								estatus: true,
 							},
-						},
-						{
-							model: bd.Cotizaciones,
-							as: 'Cotizaciones',
 						},
 					],
 				});
